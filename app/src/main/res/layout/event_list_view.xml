@@ -38,4 +38,32 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/recyclerView"
             android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/constraintLayout"/>
+    <android.support.design.widget.TabLayout
+            android:layout_width="395dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:id="@+id/tabLayout" android:clickable="true">
+
+        <android.support.design.widget.TabItem
+                android:onClick="pastFillList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Past events" android:id="@+id/pastTab" android:clickable="true"/>
+
+        <android.support.design.widget.TabItem
+                android:onClick="currentFillList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current events" android:id="@+id/currentTab" android:clickable="true"/>
+
+        <android.support.design.widget.TabItem
+                android:onClick="futureFillList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Future events" android:id="@+id/futureTab" android:clickable="true"/>
+    </android.support.design.widget.TabLayout>
+
+
 </android.support.constraint.ConstraintLayout>
