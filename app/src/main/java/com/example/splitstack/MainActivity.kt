@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         signInButton.isEnabled = true
 
         signInButton.setOnClickListener { view: View ->
-            blockstackSession().redirectUserToSignIn {
+           blockstackSession().redirectUserToSignIn {
                 // only called on error
             }
         }
@@ -36,6 +36,9 @@ class MainActivity : AppCompatActivity() {
             // handle the redirect from sign in
             handleAuthResponse(intent)
         }
+        /*    val intent = Intent(this,EventListActivity::class.java)
+            startActivity(intent)
+        }*/
     }
 
     private fun onSignIn(userData: UserData) {
