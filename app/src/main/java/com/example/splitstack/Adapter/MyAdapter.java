@@ -1,11 +1,13 @@
 package com.example.splitstack.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.example.splitstack.ExpenseActivity;
 import com.example.splitstack.Models.TitleChild;
 import com.example.splitstack.Models.TitleParent;
 import com.example.splitstack.R;
@@ -52,5 +54,12 @@ public class MyAdapter extends ExpandableRecyclerAdapter<TitleParentViewHolder, 
         titleChildViewHolder.expenses.setText(title.getExpenses());
         titleChildViewHolder.participants.setText(title.getParticipants());
         titleChildViewHolder.location.setText(title.getLocation());
+        titleChildViewHolder.expenses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ExpenseActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
     }
 }

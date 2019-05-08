@@ -1,8 +1,10 @@
 package com.example.splitstack.ViewHolders;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
+import com.example.splitstack.MainActivity;
 import com.example.splitstack.R;
 
 public class TitleChildViewHolder extends ChildViewHolder {

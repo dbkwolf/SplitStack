@@ -28,7 +28,9 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     }
 
     public ExpenseAdapter(ArrayList<ExampleItem> exampleItems){
+
         mExampleList = exampleItems;
+
     }
 
     @Override
