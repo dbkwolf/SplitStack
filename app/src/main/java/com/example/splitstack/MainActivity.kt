@@ -30,20 +30,21 @@ class MainActivity : AppCompatActivity() {
         signInButton.isEnabled = true
 
         signInButton.setOnClickListener { view: View ->
-           blockstackSession().redirectUserToSignIn {
-                // only called on error
-            }
-        }
-        if (intent?.action == Intent.ACTION_VIEW)
-        //{
+            blockstackSession().redirectUserToSignIn {
+            // only called on error
+            // }
+            // }
+             if (intent?.action == Intent.ACTION_VIEW)
+            //{
             // handle the redirect from sign in
-            handleAuthResponse(intent)
-        // }
+             handleAuthResponse(intent)
+             }
 //            val intent = Intent(this,ExpenseActivity::class.java)
 //            startActivity(intent)
-        /*    val intent = Intent(this,EventListActivity::class.java)
-            startActivity(intent)
-        }*/
+               // val intent = Intent(this,EventListActivity::class.java)
+            //startActivity(intent)
+
+        }
     }
 
     private fun onSignIn(userData: UserData) {
