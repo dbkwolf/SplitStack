@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+
         val scopes = arrayOf(Scope.StoreWrite)
         val config = "https://flamboyant-darwin-d11c17.netlify.com"
             .toBlockstackConfig(scopes)
@@ -32,10 +34,13 @@ class MainActivity : AppCompatActivity() {
                 // only called on error
             }
         }
-        if (intent?.action == Intent.ACTION_VIEW) {
+        if (intent?.action == Intent.ACTION_VIEW)
+        //{
             // handle the redirect from sign in
             handleAuthResponse(intent)
-        }
+        // }
+//            val intent = Intent(this,ExpenseActivity::class.java)
+//            startActivity(intent)
         /*    val intent = Intent(this,EventListActivity::class.java)
             startActivity(intent)
         }*/
