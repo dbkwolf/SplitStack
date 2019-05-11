@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val scopes = arrayOf(Scope.StoreWrite)
-        val config = "https://flamboyant-darwin-d11c17.netlify.com"
+        val config = "https://dbkwolf.github.io/SplitStack/"
             .toBlockstackConfig(scopes)
 
         _blockstackSession = BlockstackSession(this, config)
