@@ -1,5 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/duoIn_View"
+        android:layout_width="184dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/radius"
+        />
+
+    <TextView
+        android:id="@+id/dueIn_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Due In: "
+        app:layout_constraintBottom_toBottomOf="@+id/duoIn_View"
+        app:layout_constraintEnd_toEndOf="@+id/duoIn_View"
+        app:layout_constraintHorizontal_bias="0.19"
+        app:layout_constraintStart_toStartOf="@+id/duoIn_View"
+        app:layout_constraintTop_toTopOf="@+id/duoIn_View"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/dueInAmount_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Amount"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/duoIn_View"
+        app:layout_constraintEnd_toEndOf="@+id/duoIn_View"
+        app:layout_constraintStart_toStartOf="@+id/duoIn_View"
+        app:layout_constraintTop_toTopOf="@+id/duoIn_View"
+        app:layout_constraintVertical_bias="0.504"
+        android:textColor="#43a047"/>
+
+    <View
+        android:id="@+id/dueOut_View"
+        android:layout_width="184dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.27"
+        app:layout_constraintStart_toEndOf="@+id/duoIn_View"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/radius"/>
+
+
+    <TextView
+        android:id="@+id/dueOut_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Due Out: "
+        app:layout_constraintBottom_toBottomOf="@+id/dueOut_View"
+        app:layout_constraintEnd_toEndOf="@+id/dueOut_View"
+        app:layout_constraintHorizontal_bias="0.195"
+        app:layout_constraintStart_toStartOf="@+id/dueOut_View"
+        app:layout_constraintTop_toTopOf="@+id/dueOut_View"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/DueOutAmount_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Amount"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/dueOut_View"
+        app:layout_constraintEnd_toEndOf="@+id/dueOut_View"
+        app:layout_constraintStart_toStartOf="@+id/dueOut_View"
+        app:layout_constraintTop_toTopOf="@+id/dueOut_View"
+        android:textColor="#d32f2f"/>
+
+    <View
+        android:id="@+id/dontKnow_View"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/duoIn_View"
+        android:background="@drawable/radius"/>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="339dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dontKnow_View"
+        app:layout_constraintVertical_bias="0.714"
+        android:background="@drawable/radius"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView2"
+        android:layout_width="0dp"
+        android:layout_height="275dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/activeEvents_textView" />
+
+    <TextView
+        android:id="@+id/activeEvents_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Active Events: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.228"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        android:textColor="@color/blue"/>
+
+    <TextView
+        android:id="@+id/activeEventsAmount_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:text="Amount"
+        android:textSize="20sp"
+        android:textColor="@color/blue"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/activeEvents_textView"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
 
 </android.support.constraint.ConstraintLayout>
