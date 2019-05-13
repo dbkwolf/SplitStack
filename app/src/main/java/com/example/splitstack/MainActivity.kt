@@ -39,9 +39,9 @@ class MainActivity : AppCompatActivity() {
             // handle the redirect from sign in
              handleAuthResponse(intent)
              }
-//            val intent = Intent(this,ExpenseActivity::class.java)
-//            startActivity(intent)
-               // val intent = Intent(this,EventListActivity::class.java)
+          // val intent = Intent(this,ExpenseActivity::class.java)
+            //startActivity(intent)
+            //val intent = Intent(this,EventListActivity::class.java)
             //startActivity(intent)
 
         }

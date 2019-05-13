@@ -6,10 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import com.example.splitstack.Adapter.ExpenseAdapter;
+import com.example.splitstack.Adapter.ParticipantAdapter;
 
 import java.util.ArrayList;
 
-public class ExpenseActivity extends AppCompatActivity {
+public class ParticipantActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManage;
@@ -19,15 +20,17 @@ public class ExpenseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_expenses);
 
-        ArrayList<ExampleItem> exampleList = new ArrayList<>();
-        exampleList.add(new ExampleItem(R.drawable.ic_android,"Line 1", "Line 2"));
-        exampleList.add(new ExampleItem(R.drawable.ic_android,"Line 3", "Line 4"));
-        exampleList.add(new ExampleItem(R.drawable.ic_android,"Line 5", "Line 6"));
+        ArrayList<ParticipantItem> participantList = new ArrayList<>();
+        participantList.add(new ParticipantItem("Marcus", "100 kroners"));
+        participantList.add(new ParticipantItem("John", "20 kroners"));
+        participantList.add(new ParticipantItem("Delay", "50 kroners"));
+
+
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManage = new LinearLayoutManager(this);
-        mAdapter = new ExpenseAdapter(exampleList);
+        mAdapter = new ParticipantAdapter(participantList);
 
         mRecyclerView.setLayoutManager(mLayoutManage);
         mRecyclerView.setAdapter(mAdapter);

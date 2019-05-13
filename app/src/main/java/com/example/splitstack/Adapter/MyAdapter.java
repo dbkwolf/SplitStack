@@ -10,6 +10,7 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.ExpenseActivity;
 import com.example.splitstack.Models.TitleChild;
 import com.example.splitstack.Models.TitleParent;
+import com.example.splitstack.ParticipantActivity;
 import com.example.splitstack.R;
 import com.example.splitstack.ViewHolders.TitleChildViewHolder;
 import com.example.splitstack.ViewHolders.TitleParentViewHolder;
@@ -61,5 +62,13 @@ public class MyAdapter extends ExpandableRecyclerAdapter<TitleParentViewHolder, 
                 mContext.startActivity(intent);
             }
         });
+        titleChildViewHolder.participants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ParticipantActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+
     }
 }
