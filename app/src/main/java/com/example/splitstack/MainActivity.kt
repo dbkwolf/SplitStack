@@ -41,6 +41,8 @@ class MainActivity : AppCompatActivity() {
 
         if (intent?.action == Intent.ACTION_VIEW) {
             handleAuthResponse(intent)
+            val intent = Intent(this,DashboardActivity::class.java)
+             startActivity(intent)
         }
 
     }
