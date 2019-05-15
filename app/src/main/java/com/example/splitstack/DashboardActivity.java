@@ -19,7 +19,7 @@ public class DashboardActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManage;
-    private String decentralizedIdForUser="";
+    private String decentralizedIdForUser;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +34,6 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
 
-
-
-
         mRecyclerView = findViewById(R.id.activeEvents_recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManage = new LinearLayoutManager(this);
@@ -44,15 +41,16 @@ public class DashboardActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(mLayoutManage);
         mRecyclerView.setAdapter(mAdapter);
-      //  setUserID();
+        setUserID();
     }
-private void setUserID(){
+public void setUserID(){
    String userIdFromPreviousScreen = getIntent().getStringExtra("userId");
     TextView userIdText = findViewById(R.id.UserIdText);
     userIdText.setText("Logged in as " + userIdFromPreviousScreen);
     System.out.println(userIdFromPreviousScreen);
     decentralizedIdForUser = getIntent().getStringExtra("decentralizedIdForUser");
     }
+
 public void goToEventList(View view){
         Intent intent =new  Intent(this,EventListActivity.class);
         startActivity(intent);

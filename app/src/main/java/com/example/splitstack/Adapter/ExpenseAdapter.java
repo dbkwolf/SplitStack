@@ -46,13 +46,13 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     public void onBindViewHolder( ExpenseViewHolder expenseViewHolder, int position) {
     ExampleItem currentItem = mExampleList.get(position);
 
-
-    expenseViewHolder.mTextView1.setText(currentItem.getText1());
-    expenseViewHolder.mTextView2.setText(currentItem.getText2());
+        expenseViewHolder.mTextView1.setText(currentItem.getText1());
+        expenseViewHolder.mTextView2.setText(currentItem.getText2());
     }
 
     @Override
     public int getItemCount() {
-        return mExampleList.size();
+       return mExampleList.size();
+        //return 0;
     }
 }
