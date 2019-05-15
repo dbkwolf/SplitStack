@@ -3,4 +3,6 @@
     <string name="line_1">Line 1</string>
     <string name="line_2">Line 2</string>
     <string name="line_3">Line 3</string>
+    <string name="getStarted">Get Started</string>
+    <string name="welcome">Welcome to Splitstack</string>
 </resources>

@@ -5,4 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="dashboardViews">#bdbdbd</color>
     <color name="blue">#1565c0</color>
+    <color name="mainActivity">#43a047</color>
+    <color name="grey">#fafafa</color>
+    <color name="Purple">#4a148c</color>
 </resources>

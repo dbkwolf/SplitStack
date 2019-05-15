@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import org.blockstack.android.sdk.*
@@ -41,25 +43,30 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
         if (intent?.action == Intent.ACTION_VIEW) {
             handleAuthResponse(intent)
-            val intent = Intent(this,DashboardActivity::class.java)
-          intent.putExtra("userId", usersId)
-          intent.putExtra("decentralizedIdForUser", decentralizedIdForUser)
-            startActivity(intent)
+
+//            val intent = Intent(this,MainActivity::class.java)
+//            println("This is not working")
+//            intent.putExtra("userId", usersId)
+//            intent.putExtra("decentralizedIdForUser", decentralizedIdForUser)
+//            startActivity(intent)
         }
 
     }
 
     private fun onSignIn(userData: UserData) {
-        userDataTextView.text = "Signed in as ${userData.json.getString("username")}"
+        userDataTextView.text = "Welcome ${userData.json.getString("username")}"
        usersId = userData.json.getString("username")
         decentralizedIdForUser = userData.decentralizedID
+        println("This is not being run")
         //  showUserAvatar(userData.profile?.avatarImage)
         signInButton.isEnabled = false
+        signInButton.visibility = INVISIBLE
         returnToDashBoard.isEnabled = true
-
-
+        returnToDashBoard.visibility = VISIBLE
+        userDataTextView.text = "Signed in"
     }
 
 
@@ -71,6 +78,7 @@ class MainActivity : AppCompatActivity() {
             val userData = blockstackSession().loadUserData()
             if (userData != null) {
                 runOnUiThread {
+                    System.out.print("this Working" + usersId)
                     onSignIn(userData)
                 }
             } else {
@@ -94,8 +102,9 @@ class MainActivity : AppCompatActivity() {
                     if (userDataResult.hasValue) {
                         val userData = userDataResult.value!!
                         Log.d(TAG, "signed in!")
+                        System.out.print("This is working")
+                        onSignIn(userData)
                         runOnUiThread {
-                            onSignIn(userData)
                         }
                     } else {
                         Toast.makeText(this, "error: " + userDataResult.error, Toast.LENGTH_SHORT).show()
