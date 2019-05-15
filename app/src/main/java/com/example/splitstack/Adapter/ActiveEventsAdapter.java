@@ -6,12 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.splitstack.ActiveEventsItem;
+import com.example.splitstack.DBUtility.EventData;
 import com.example.splitstack.R;
 
 import java.util.ArrayList;
 
 public class ActiveEventsAdapter extends RecyclerView.Adapter<ActiveEventsAdapter.ActiveEventsViewHolder> {
-    private ArrayList<ActiveEventsItem> mExampleList;
+    private ArrayList<EventData> mExampleList;
 
 
     public static class ActiveEventsViewHolder extends RecyclerView.ViewHolder {
@@ -25,9 +26,9 @@ public class ActiveEventsAdapter extends RecyclerView.Adapter<ActiveEventsAdapte
         }
     }
 
-    public ActiveEventsAdapter(ArrayList<ActiveEventsItem> ActiveEventsItems){
+    public ActiveEventsAdapter(ArrayList<EventData> eventItems){
 
-        mExampleList = ActiveEventsItems;
+        mExampleList = eventItems;
 
     }
 
@@ -41,9 +42,9 @@ public class ActiveEventsAdapter extends RecyclerView.Adapter<ActiveEventsAdapte
 
     @Override
     public void onBindViewHolder( ActiveEventsViewHolder activeEventsViewHolder, int position) {
-        ActiveEventsItem currentItem = mExampleList.get(position);
+        EventData currentItem = mExampleList.get(position);
         activeEventsViewHolder.mTextView1.setText(currentItem.getEventName());
-        activeEventsViewHolder.mTextView2.setText(currentItem.getCreator());
+        //activeEventsViewHolder.mTextView2.setText(currentItem.getCreator());
     }
 
     @Override
