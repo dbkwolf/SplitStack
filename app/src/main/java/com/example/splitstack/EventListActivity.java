@@ -1,6 +1,7 @@
 package com.example.splitstack;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -96,7 +97,11 @@ public class EventListActivity extends AppCompatActivity {
 
         return parentObject;
     }
+    public void createButton(View view){
+        Intent intent = new Intent(this,CreateEventActivity.class);
+        startActivity(intent);
 
+    }
 
 
     public void testMethod(View view){
