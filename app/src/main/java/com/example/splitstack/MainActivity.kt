@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         _blockstackSession = BlockstackSession(this@MainActivity, config)
         signInButton.isEnabled = true
-
+        returnToDashBoard.isEnabled = false
         signInButton.setOnClickListener { _: View ->
             blockstackSession().redirectUserToSignIn { errorResult ->
                 if (errorResult.hasErrors) {
@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         decentralizedIdForUser = userData.decentralizedID
         //  showUserAvatar(userData.profile?.avatarImage)
         signInButton.isEnabled = false
+        returnToDashBoard.isEnabled = true
 
 
     }
@@ -112,5 +113,10 @@ class MainActivity : AppCompatActivity() {
             throw IllegalStateException("No session.")
         }
     }
-
+fun returnToDashboard(view: View){
+    val intent = Intent(this,DashboardActivity::class.java)
+    intent.putExtra("userId", usersId)
+    intent.putExtra("decentralizedIdForUser", decentralizedIdForUser)
+    startActivity(intent)
+}
 }

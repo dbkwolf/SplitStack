@@ -24,7 +24,7 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_layout);
-
+        setUserID();
         ArrayList<ActiveEventsItem> activeEventsList = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             activeEventsList.add(new ActiveEventsItem("Spain Holiday", "John"));
@@ -44,7 +44,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(mLayoutManage);
         mRecyclerView.setAdapter(mAdapter);
-        setUserID();
+      //  setUserID();
     }
 private void setUserID(){
    String userIdFromPreviousScreen = getIntent().getStringExtra("userId");
