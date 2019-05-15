@@ -1,10 +1,12 @@
 package com.example.splitstack;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 import com.example.splitstack.Adapter.ActiveEventsAdapter;
 import com.example.splitstack.Adapter.ExpenseAdapter;
@@ -50,4 +52,8 @@ private void setUserID(){
     System.out.println(userIdFromPreviousScreen);
     decentralizedIdForUser = getIntent().getStringExtra("decentralizedIdForUser");
     }
+public void goToEventList(View view){
+        Intent intent =new  Intent(this,EventListActivity.class);
+        startActivity(intent);
+}
 }

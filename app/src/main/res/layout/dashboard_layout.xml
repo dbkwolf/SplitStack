@@ -138,6 +138,7 @@
         android:layout_marginTop="24dp"
         android:clickable="true"
         android:elevation="8dp"
+        android:onClick="goToEventList"
         android:text="Active Events: "
         android:textColor="@color/blue"
         android:textSize="20sp"
