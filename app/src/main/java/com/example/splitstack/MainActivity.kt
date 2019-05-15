@@ -16,6 +16,7 @@ private const val username = "dev_android_sdk.id.blockstack"
 private var usersId = ""
 private var decentralizedIdForUser = ""
 @SuppressLint("SetTextI18n")
+
 class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName
 

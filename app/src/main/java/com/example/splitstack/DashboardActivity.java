@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.example.splitstack.Adapter.ActiveEventsAdapter;
 import com.example.splitstack.Adapter.ExpenseAdapter;
 import com.example.splitstack.Adapter.ParticipantAdapter;
@@ -48,6 +49,9 @@ public class DashboardActivity extends AppCompatActivity {
 private void setUserID(){
    String userIdFromPreviousScreen = getIntent().getStringExtra("userId");
     TextView userIdText = findViewById(R.id.UserIdText);
+    Toast toast = Toast.makeText(this, userIdFromPreviousScreen, Toast.LENGTH_LONG);
+    toast.show();
+    System.out.println("WORKING" +userIdFromPreviousScreen);
     userIdText.setText("Logged in as " + userIdFromPreviousScreen);
     System.out.println(userIdFromPreviousScreen);
     decentralizedIdForUser = getIntent().getStringExtra("decentralizedIdForUser");
