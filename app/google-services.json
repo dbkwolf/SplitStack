@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "97338777921",
+    "firebase_url": "https://splitstack-2dcd8.firebaseio.com",
+    "project_id": "splitstack-2dcd8",
+    "storage_bucket": "splitstack-2dcd8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97338777921:android:21b0dd69883584e5",
+        "android_client_info": {
+          "package_name": "com.example.splitstack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97338777921-9cfmpgh8a3v4f2ck8k0mmn3nkfogitji.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.splitstack",
+            "certificate_hash": "3bd742357e612ad20395a01729d00120c45eeb7a"
+          }
+        },
+        {
+          "client_id": "97338777921-1nrbumjppvebbt3vveoplifsq1rve0un.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbwCyn7YCumh-VFswKsdd1ZCNyddSe1hs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97338777921-1nrbumjppvebbt3vveoplifsq1rve0un.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
