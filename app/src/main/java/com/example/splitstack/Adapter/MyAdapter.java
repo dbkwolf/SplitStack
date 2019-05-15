@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.ExpenseActivity;
-import com.example.splitstack.Models.TitleChild;
-import com.example.splitstack.Models.TitleParent;
+import com.example.splitstack.Models.ChildItem;
+import com.example.splitstack.Models.ParentItem;
 import com.example.splitstack.ParticipantActivity;
 import com.example.splitstack.R;
 import com.example.splitstack.ViewHolders.TitleChildViewHolder;
@@ -30,6 +30,12 @@ public class MyAdapter extends ExpandableRecyclerAdapter<TitleParentViewHolder, 
     }
 
 
+    @Override
+    public void onParentItemClickListener(int position) {
+        super.onParentItemClickListener(position);
+
+
+    }
 
     @Override
     public TitleParentViewHolder onCreateParentViewHolder(ViewGroup viewGroup) {
@@ -44,14 +50,14 @@ public class MyAdapter extends ExpandableRecyclerAdapter<TitleParentViewHolder, 
     }
 
     @Override
-    public void onBindParentViewHolder(TitleParentViewHolder titleParentViewHolder, int i, Object o) {
-        TitleParent title = (TitleParent) o;
+    public void onBindParentViewHolder(final TitleParentViewHolder titleParentViewHolder, int i, Object o) {
+        ParentItem title = (ParentItem) o;
         titleParentViewHolder.getTextView().setText(title.getTitle());
     }
 
     @Override
     public void onBindChildViewHolder(TitleChildViewHolder titleChildViewHolder, int i, Object o) {
-        TitleChild title = (TitleChild)o;
+        ChildItem title = (ChildItem)o;
         titleChildViewHolder.expenses.setText(title.getExpenses());
         titleChildViewHolder.participants.setText(title.getParticipants());
         titleChildViewHolder.location.setText(title.getLocation());

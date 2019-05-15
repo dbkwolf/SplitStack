@@ -1,6 +1,5 @@
 package com.example.splitstack;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,12 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.Adapter.MyAdapter;
-import com.example.splitstack.Models.TitleChild;
+import com.example.splitstack.Models.ChildItem;
 import com.example.splitstack.Models.TitleCreator;
-import com.example.splitstack.Models.TitleParent;
+import com.example.splitstack.Models.ParentItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,21 +73,23 @@ public class EventListActivity extends AppCompatActivity {
     }
 
     private List<ParentObject> initData(int tabnumber) {
-        TitleCreator titleCreator = TitleCreator.get(this);
-        List<TitleParent> titles = titleCreator.getAll();
+        //TitleCreator titleCreator = TitleCreator.get(this);
+        ArrayList<ParentItem> parentList = makeParentList();
+        TitleCreator titleCreator = new TitleCreator();
+        List<ParentItem> titles = titleCreator.makeList(parentList);
         List<ParentObject> parentObject = new ArrayList<>();
         System.out.println(titles.size());
         if(tabnumber == 1) {
             for (int i = 0; i < titles.size(); i++) {
                 List<Object> childList = new ArrayList<>();
-                childList.add(new TitleChild("expenses: 10000 SEK", "participants: " + 120, "Helsingborg"));
+                childList.add(new ChildItem("expenses: 10000 SEK", "participants: " + 120, "Helsingborg"));
                 titles.get(i).setChildObjectList(childList);
                 parentObject.add(titles.get(i));
             }
         } else if(tabnumber==2){
             for (int i = 0; i < titles.size(); i++) {
                 List<Object> childList = new ArrayList<>();
-                childList.add(new TitleChild("expenses: 50 SEK", "participants: " + 120, "Helsingborg"));
+                childList.add(new ChildItem("expenses: 50 SEK", "participants: " + 120, "Helsingborg"));
                 titles.get(i).setChildObjectList(childList);
                 parentObject.add(titles.get(i));
             }
@@ -101,6 +101,14 @@ public class EventListActivity extends AppCompatActivity {
         Intent intent = new Intent(this,CreateEventActivity.class);
         startActivity(intent);
 
+    }
+
+    public ArrayList<ParentItem> makeParentList(){
+        ArrayList<ParentItem> parentList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            parentList.add(new ParentItem("Spain Holiday"));
+        }
+        return parentList;
     }
 
 
