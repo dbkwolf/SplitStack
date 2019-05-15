@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".CreateEventActivity"></activity>
         <activity android:name=".EventListActivity"></activity>
         <activity android:name=".ExpenseActivity"></activity>
@@ -25,7 +26,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="splitstack-app" />
+
+                <data android:scheme="blockstacksample"/>
             </intent-filter>
         </activity>
     </application>
