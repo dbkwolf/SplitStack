@@ -136,14 +136,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:elevation="8dp"
         android:text="Active Events: "
+        android:textColor="@color/blue"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintHorizontal_bias="0.228"
         app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/UserIdText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:text="TextView"
+        android:textSize="20sp"
         android:textColor="@color/blue"
-        android:elevation="8dp"/>
+        app:layout_constraintBottom_toBottomOf="@+id/dontKnow_View"
+        app:layout_constraintEnd_toEndOf="@+id/dontKnow_View"
+        app:layout_constraintHorizontal_bias="0.062"
+        app:layout_constraintStart_toStartOf="@+id/dontKnow_View"
+        app:layout_constraintTop_toTopOf="@+id/dontKnow_View"
+        app:layout_constraintVertical_bias="0.142" />
 
     <TextView
         android:id="@+id/activeEventsAmount_textView"

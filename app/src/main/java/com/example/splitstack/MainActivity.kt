@@ -13,7 +13,8 @@ import org.blockstack.android.sdk.*
 
 
 private const val username = "dev_android_sdk.id.blockstack"
-
+private var usersId = ""
+private var decentralizedIdForUser = ""
 @SuppressLint("SetTextI18n")
 class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName
@@ -42,13 +43,17 @@ class MainActivity : AppCompatActivity() {
         if (intent?.action == Intent.ACTION_VIEW) {
             handleAuthResponse(intent)
             val intent = Intent(this,DashboardActivity::class.java)
-             startActivity(intent)
+          intent.putExtra("userId", usersId)
+          intent.putExtra("decentralizedIdForUser", decentralizedIdForUser)
+            startActivity(intent)
         }
 
     }
 
     private fun onSignIn(userData: UserData) {
         userDataTextView.text = "Signed in as ${userData.json.getString("username")}"
+       usersId = userData.json.getString("username")
+        decentralizedIdForUser = userData.decentralizedID
         //  showUserAvatar(userData.profile?.avatarImage)
         signInButton.isEnabled = false
 
