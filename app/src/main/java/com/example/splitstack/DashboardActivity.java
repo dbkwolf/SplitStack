@@ -49,9 +49,6 @@ public class DashboardActivity extends AppCompatActivity {
 private void setUserID(){
    String userIdFromPreviousScreen = getIntent().getStringExtra("userId");
     TextView userIdText = findViewById(R.id.UserIdText);
-    Toast toast = Toast.makeText(this, userIdFromPreviousScreen, Toast.LENGTH_LONG);
-    toast.show();
-    System.out.println("WORKING" +userIdFromPreviousScreen);
     userIdText.setText("Logged in as " + userIdFromPreviousScreen);
     System.out.println(userIdFromPreviousScreen);
     decentralizedIdForUser = getIntent().getStringExtra("decentralizedIdForUser");
