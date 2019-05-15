@@ -97,13 +97,6 @@ public class EventListActivity extends AppCompatActivity {
         return parentObject;
     }
 
-    @Override
-    public void onBackPressed(){
-        MyAdapter adapter = new MyAdapter(this, initData(2));
-        adapter.setParentClickableViewAnimationDefaultDuration();
-        adapter.setParentAndIconExpandOnClick(true);
-    }
-
 
 
     public void testMethod(View view){
