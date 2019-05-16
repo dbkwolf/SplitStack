@@ -1,5 +1,6 @@
 package com.example.splitstack;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,8 +17,8 @@ public class CreateEventActivity extends AppCompatActivity {
     public void addUserButton(View view){
 
 
-        Toast toast = Toast.makeText(getApplicationContext(), "Participant _______ added", Toast.LENGTH_LONG); // initiate the Toast with context, message and duration for the Toast
-        toast.show(); // display the Toast
+        Toast toast = Toast.makeText(getApplicationContext(), "Participant _______ added", Toast.LENGTH_LONG);
+        toast.show();
 
         TextView textView8 = findViewById(R.id.editText8);
 
@@ -25,6 +26,11 @@ public class CreateEventActivity extends AppCompatActivity {
 
     }
     public void createButton(View view){
+
+    Intent intent = new Intent(this, EventListActivity.class);
+    startActivity(intent);
+
+        Toast.makeText(this, "splitStack created", Toast.LENGTH_SHORT).show();
 
 
 

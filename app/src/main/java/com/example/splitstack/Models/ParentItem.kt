@@ -3,7 +3,7 @@ package com.example.splitstack.Models
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject
 import java.util.UUID
 
-class TitleParent(var title: String?) : ParentObject {
+class ParentItem(var title: String?) : ParentObject {
 
     private var mChildrenList: List<Any>? = null
 

@@ -7,25 +7,36 @@ import java.util.List;
 
 public class TitleCreator {
     static TitleCreator titleCreator;
-    List<TitleParent> titleParents;
+    List<ParentItem> titleParents;
 
 
-    public TitleCreator(Context context){
+    public TitleCreator(){
+//        titleParents = new ArrayList<>();
+//        for (int i = 1; i < 100; i++) {
+//            ParentItem title = new ParentItem(String.format("Event name",i));
+//            titleParents.add(title);
+//        }
+    }
+
+//    public static TitleCreator get(Context context){
+//        if(titleCreator==null){
+//            titleCreator = new TitleCreator(context);
+//        }
+//        return titleCreator;
+//    }
+
+    public List<ParentItem> makeList(ArrayList<ParentItem> parentList){
         titleParents = new ArrayList<>();
-        for (int i = 1; i < 100; i++) {
-            TitleParent title = new TitleParent(String.format("Event name",i));
-            titleParents.add(title);
+        for (int i = 0; i < parentList.size(); i++) {
+            ParentItem parentItem = new ParentItem(parentList.get(i).getTitle());
+            System.out.println(parentItem.getTitle());
+            titleParents.add(parentItem);
+
         }
+        return titleParents;
     }
 
-    public static TitleCreator get(Context context){
-        if(titleCreator==null){
-            titleCreator = new TitleCreator(context);
-        }
-        return titleCreator;
-    }
-
-    public List<TitleParent> getAll() {
+    public List<ParentItem> getAll() {
         return titleParents;
     }
 }
