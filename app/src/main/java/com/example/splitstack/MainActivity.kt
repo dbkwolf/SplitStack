@@ -18,6 +18,7 @@ import org.blockstack.android.sdk.*
 private const val username = "dev_android_sdk.id.blockstack"
 private var usersId = ""
 private var decentralizedIdForUser = ""
+
 @SuppressLint("SetTextI18n")
 
 class MainActivity : AppCompatActivity() {
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onSignIn(userData: UserData) {
         userDataTextView.text = "Welcome ${userData.json.getString("username")}"
-       usersId = userData.json.getString("username")
+        usersId = userData.json.getString("username")
         decentralizedIdForUser = userData.decentralizedID
         println("This is not being run")
         //  showUserAvatar(userData.profile?.avatarImage)
@@ -124,10 +125,11 @@ class MainActivity : AppCompatActivity() {
             throw IllegalStateException("No session.")
         }
     }
-fun returnToDashboard(view: View){
-    val intent = Intent(this,DashboardActivity::class.java)
-    intent.putExtra("userId", usersId)
-    intent.putExtra("decentralizedIdForUser", decentralizedIdForUser)
-    startActivity(intent)
-}
+
+    fun returnToDashboard(view: View) {
+        val intent = Intent(this, DashboardActivity::class.java)
+        intent.putExtra("userId", usersId)
+        intent.putExtra("decentralizedIdForUser", decentralizedIdForUser)
+        startActivity(intent)
+    }
 }

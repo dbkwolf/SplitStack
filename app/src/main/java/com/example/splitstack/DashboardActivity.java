@@ -55,6 +55,8 @@ public class DashboardActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(mLayoutManage);
         mRecyclerView.setAdapter(mAdapter);
+
+
         //  setUserID();
     }
 
@@ -148,6 +150,8 @@ public class DashboardActivity extends AppCompatActivity {
                                 mAdapter = new ActiveEventsAdapter(eventDataList);
 
                                 mRecyclerView.setAdapter(mAdapter);
+
+
 
                             }
                         });
