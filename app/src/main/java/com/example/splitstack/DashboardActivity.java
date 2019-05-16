@@ -31,7 +31,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private String id = "";
     private UserData currentUserData = null ;
-    private ArrayList<EventData> eventDataList = new ArrayList<>();
+
 
     FirebaseFirestore database = null;
 
@@ -45,14 +45,13 @@ public class DashboardActivity extends AppCompatActivity {
         database = FirebaseFirestore.getInstance();
 
         findUser();
-        if(!id.equals("")){
-        System.out.println(currentUserData.toString());}
-        findEvents();
+
+
 
         mRecyclerView = findViewById(R.id.activeEvents_recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManage = new LinearLayoutManager(this);
-        mAdapter = new ActiveEventsAdapter(eventDataList);
+        //mAdapter = new ActiveEventsAdapter(null);
 
         mRecyclerView.setLayoutManager(mLayoutManage);
         mRecyclerView.setAdapter(mAdapter);
@@ -92,7 +91,8 @@ public class DashboardActivity extends AppCompatActivity {
                         if (document.exists()) {
                             //Document exists!
                             currentUserData = document.toObject(UserData.class);
-                            System.out.println(currentUserData.toString());
+                            findEvents();
+
 
                         } else {
                             //Document does not exist!
@@ -124,12 +124,12 @@ public class DashboardActivity extends AppCompatActivity {
 
         System.out.println("----------------------------------in find event");
 
-
+        System.out.println(currentUserData.toString());
 
             if(currentUserData!=null) {
 
 
-                System.out.println();
+                final ArrayList<EventData> eventDataList = new ArrayList<>();
 
                 List<String> eventIdList = currentUserData.getEventList();
 
@@ -144,6 +144,11 @@ public class DashboardActivity extends AppCompatActivity {
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 EventData eventData = documentSnapshot.toObject(EventData.class);
                                 eventDataList.add(eventData);
+
+                                mAdapter = new ActiveEventsAdapter(eventDataList);
+
+                                mRecyclerView.setAdapter(mAdapter);
+
                             }
                         });
 
@@ -151,6 +156,9 @@ public class DashboardActivity extends AppCompatActivity {
                     }
 
                 }
+
+
+
             }
 
     }

@@ -44,7 +44,7 @@ public class ActiveEventsAdapter extends RecyclerView.Adapter<ActiveEventsAdapte
     public void onBindViewHolder( ActiveEventsViewHolder activeEventsViewHolder, int position) {
         EventData currentItem = mExampleList.get(position);
         activeEventsViewHolder.mTextView1.setText(currentItem.getEventName());
-        //activeEventsViewHolder.mTextView2.setText(currentItem.getCreator());
+        activeEventsViewHolder.mTextView2.setText("test");
     }
 
     @Override
