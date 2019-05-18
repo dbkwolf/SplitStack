@@ -74,6 +74,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void goToEventList(View view) {
         Intent intent = new Intent(this, EventListActivity.class);
+        intent.putExtra("uid", id);
         startActivity(intent);
     }
 
@@ -144,8 +145,10 @@ public class DashboardActivity extends AppCompatActivity {
                         docIdRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
+
                                 EventData eventData = documentSnapshot.toObject(EventData.class);
                                 eventDataList.add(eventData);
+
 
                                 mAdapter = new ActiveEventsAdapter(eventDataList);
 
