@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,15 +14,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
-import com.example.splitstack.Adapter.MyAdapter;
+import com.example.splitstack.Adapter.EventAdapter;
 import com.example.splitstack.DBUtility.EventData;
-import com.example.splitstack.DBUtility.UserData;
+import com.example.splitstack.Models.ChildItem;
 import com.example.splitstack.Models.ParentItem;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.example.splitstack.Models.TitleCreator;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -40,13 +36,13 @@ public class EventListActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ((MyAdapter) recyclerView.getAdapter()).onSaveInstanceState(outState);
+        ((EventAdapter) recyclerView.getAdapter()).onSaveInstanceState(outState);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.event_list_view);
+        setContentView(R.layout.activity_event_list);
 
         uid = getIntent().getStringExtra("uid");
 
@@ -54,6 +50,8 @@ public class EventListActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
 
         tabLayout = findViewById(R.id.tabLayout);
 
@@ -63,23 +61,16 @@ public class EventListActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
 
+                    loadTab(0);
+
                 }
                 if (tab.getPosition() == 1) {
 
-                    MyAdapter adapter = new MyAdapter(EventListActivity.this, initData(1));
-                    adapter.setParentClickableViewAnimationDefaultDuration();
-                    adapter.setParentAndIconExpandOnClick(true);
-
-                    recyclerView.setAdapter(adapter);
+                    loadTab(1);
 
                 }
                 if (tab.getPosition() == 2) {
 
-                    MyAdapter adapter = new MyAdapter(EventListActivity.this, initData(2));
-                    adapter.setParentClickableViewAnimationDefaultDuration();
-                    adapter.setParentAndIconExpandOnClick(true);
-
-                    recyclerView.setAdapter(adapter);
 
                 }
             }
@@ -96,9 +87,19 @@ public class EventListActivity extends AppCompatActivity {
         });
     }
 
+    private void loadTab(int tabNum){
+
+        EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum));
+        adapter.setParentClickableViewAnimationDefaultDuration();
+        adapter.setParentAndIconExpandOnClick(true);
+
+        recyclerView.setAdapter(adapter);
+
+    }
+
     private List<ParentObject> initData(int tabnumber) {
         //TitleCreator titleCreator = TitleCreator.get(this);
-     /*   ArrayList<ParentItem> parentList = makeParentList();
+        ArrayList<ParentItem> parentList = makeParentList();
         TitleCreator titleCreator = new TitleCreator();
         List<ParentItem> titles = titleCreator.makeList(parentList);
         List<ParentObject> parentObject = new ArrayList<>();
@@ -119,10 +120,10 @@ public class EventListActivity extends AppCompatActivity {
                 titles.get(i).setChildObjectList(childList);
                 parentObject.add(titles.get(i));
             }
-        }*/
+        }
 
 
-        return null;
+        return parentObject;
     }
 
     public void createButton(View view) {
@@ -179,6 +180,7 @@ public class EventListActivity extends AppCompatActivity {
     public void onClickAddEvent(View view) {
 
         //This is the only way to get the variable out of the anon class below (handles closure)
+
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

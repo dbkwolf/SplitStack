@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_total_amount_due_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Total Amount Due:"
+        android:textSize="15sp"
+        android:textColor="@color/colorTextOnPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout1"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout1" />
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout1"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_total_amount_due"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        android:textSize="25sp"
+        android:text="1200 kr"
+        android:textColor="@color/colorTextOnPrimary"
+        app:layout_constraintTop_toTopOf="@id/constraintLayout2"
+        app:layout_constraintStart_toStartOf="@id/constraintLayout2"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="393dp"
+        android:layout_height="430dp"
+        android:layout_marginStart="8dp"
+
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/add_event_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="395dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/colorPrimaryLight"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        app:tabIndicatorHeight="4dp"
+        app:tabTextColor="@color/colorTextOnPrimary">
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/pastTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="pastFillList"
+
+            android:text="Past events" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/currentTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="currentFillList"
+            android:text="Current events" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/futureTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="futureFillList"
+            android:text="Future events" />
+    </android.support.design.widget.TabLayout>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_event_button"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="15dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="onClickAddEvent"
+
+        android:src="@drawable/sharp_add_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

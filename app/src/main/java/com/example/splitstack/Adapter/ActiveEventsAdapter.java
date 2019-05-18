@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.example.splitstack.ActiveEventsItem;
 import com.example.splitstack.DBUtility.EventData;
 import com.example.splitstack.R;
 
@@ -34,7 +33,7 @@ public class ActiveEventsAdapter extends RecyclerView.Adapter<ActiveEventsAdapte
 
     @Override
     public ActiveEventsViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activeevents_item,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.dashboard_event_item,parent,false);
         ActiveEventsViewHolder activeEventsViewHolder = new ActiveEventsViewHolder(v);
 
         return activeEventsViewHolder;

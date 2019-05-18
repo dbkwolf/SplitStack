@@ -36,7 +36,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
 
     @Override
     public ExpenseViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.example_item,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.expense_txt_item,parent,false);
         ExpenseViewHolder expenseViewHolder = new ExpenseViewHolder(v);
 
         return expenseViewHolder;
