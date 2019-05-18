@@ -5,5 +5,7 @@
         <item>@font/aref_ruqaa</item>
         <item>@font/asset</item>
         <item>@font/goblin_one</item>
+        <item>@font/ubuntu</item>
+        <item>@font/ubuntu_light</item>
     </array>
 </resources>
