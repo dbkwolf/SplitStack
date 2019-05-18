@@ -3,8 +3,8 @@ package com.example.splitstack.DBUtility
 data class EventData (
 
     val eventName : String? = "",
-    //val isActive : String? = "",
-    val participants: HashMap<String, Any>? = null,
+    val isActive : Boolean? = true,
+    val participants: ArrayList<String>? = null,
     val totalExpenses:String? = ""
 
 

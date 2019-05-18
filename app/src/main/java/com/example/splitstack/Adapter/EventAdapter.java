@@ -17,13 +17,13 @@ import com.example.splitstack.ViewHolders.TitleParentViewHolder;
 
 import java.util.List;
 
-public class MyAdapter extends ExpandableRecyclerAdapter<TitleParentViewHolder, TitleChildViewHolder> {
+public class EventAdapter extends ExpandableRecyclerAdapter<TitleParentViewHolder, TitleChildViewHolder> {
 
 
     LayoutInflater inflater;
 
 
-    public MyAdapter(Context context, List<ParentObject> parentItemList) {
+    public EventAdapter(Context context, List<ParentObject> parentItemList) {
         super(context, parentItemList);
         inflater = LayoutInflater.from(context);
 
@@ -34,18 +34,19 @@ public class MyAdapter extends ExpandableRecyclerAdapter<TitleParentViewHolder, 
     public void onParentItemClickListener(int position) {
         super.onParentItemClickListener(position);
 
+        //TODO GO TO EVENT VIEW
 
     }
 
     @Override
     public TitleParentViewHolder onCreateParentViewHolder(ViewGroup viewGroup) {
-        View view = inflater.inflate(R.layout.list_parent, viewGroup, false);
+        View view = inflater.inflate(R.layout.list_event_parent, viewGroup, false);
         return new TitleParentViewHolder(view);
     }
 
     @Override
     public TitleChildViewHolder onCreateChildViewHolder(ViewGroup viewGroup) {
-        View view = inflater.inflate(R.layout.list_child, viewGroup, false);
+        View view = inflater.inflate(R.layout.list_event_child, viewGroup, false);
         return new TitleChildViewHolder(view);
     }
 

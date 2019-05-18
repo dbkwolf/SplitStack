@@ -43,7 +43,7 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dashboard_layout);
+        setContentView(R.layout.activity_dashboard);
         setUserID();
 
         database = FirebaseFirestore.getInstance();
@@ -79,6 +79,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void goToEventList(View view) {
         Intent intent = new Intent(this, EventListActivity.class);
+        intent.putExtra("uid", id);
         startActivity(intent);
     }
 
@@ -163,6 +164,10 @@ public class DashboardActivity extends AppCompatActivity {
 
                 List<String> eventIdList = currentUserData.getEventList();
 
+                TextView tv_amount = findViewById(R.id.activeEventsAmount_textView);
+
+                tv_amount.setText(String.valueOf(eventIdList.size()));
+
 
                 if (eventIdList != null) {
                     for (String eventId : eventIdList) {
@@ -172,8 +177,10 @@ public class DashboardActivity extends AppCompatActivity {
                         docIdRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
+
                                 EventData eventData = documentSnapshot.toObject(EventData.class);
                                 eventDataList.add(eventData);
+
 
                                 mAdapter = new ActiveEventsAdapter(eventDataList);
 
