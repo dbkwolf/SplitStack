@@ -1,5 +1,6 @@
 package com.example.splitstack;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.splitstack.Adapter.ActiveEventsAdapter;
@@ -31,6 +34,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private String id = "";
     private UserData currentUserData = null ;
+    private Dialog myDialog;
 
 
     FirebaseFirestore database = null;
@@ -45,6 +49,7 @@ public class DashboardActivity extends AppCompatActivity {
         database = FirebaseFirestore.getInstance();
 
         findUser();
+        myDialog = new Dialog(this);
 
 
 
@@ -98,12 +103,30 @@ public class DashboardActivity extends AppCompatActivity {
 
 
                         } else {
+                            myDialog.setContentView(R.layout.userdata_dialog);
+                            final EditText firstName_ET = myDialog.findViewById(R.id.firstName_EditText);
+                            final EditText lastName_ET = myDialog.findViewById(R.id.lastName_EditText);
+                            Button confirmButton = myDialog.findViewById(R.id.confirm_Button);
+
+
                             //Document does not exist!
 
-                            UserData userData = new UserData(null, "Delay", "Wolfsteller", "0", "0");
+                            confirmButton.setOnClickListener(new View.OnClickListener(){
+                                @Override
+                                public void onClick(View v) {
+                                    String firstName = firstName_ET.getText().toString();
+                                    String lastName = lastName_ET.getText().toString();
+                                    createNewUserData(firstName, lastName);
+                                    myDialog.dismiss();
+                                    System.out.println("working");
+                                }
+                            });
 
+                            //UserData userData = new UserData(null, firstName, lastName, "0", "0");
                             // Add a new document with a generated ID
-                            database.collection("users").document(id).set(userData);
+                            //database.collection("users").document(id).set(userData);
+
+                            myDialog.show();
 
                         }
                     } else {
@@ -119,6 +142,11 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void createNewUserData(String firstName, String lastName){
+        UserData userData = new UserData(null, firstName, lastName, "0", "0");
+        database.collection("users").document(id).set(userData);
     }
 
 
