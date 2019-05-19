@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.ExpenseActivity;
-import com.example.splitstack.Models.ChildItem;
-import com.example.splitstack.Models.ParentItem;
+import com.example.splitstack.Models.EventChildItem;
+import com.example.splitstack.Models.EventParentItem;
 import com.example.splitstack.ParticipantActivity;
 import com.example.splitstack.R;
-import com.example.splitstack.ViewHolders.TitleChildViewHolder;
-import com.example.splitstack.ViewHolders.TitleParentViewHolder;
+import com.example.splitstack.ViewHolders.EventChildViewHolder;
+import com.example.splitstack.ViewHolders.EventParentViewHolder;
 
 import java.util.List;
 
-public class EventAdapter extends ExpandableRecyclerAdapter<TitleParentViewHolder, TitleChildViewHolder> {
+public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolder, EventChildViewHolder> {
 
 
     LayoutInflater inflater;
@@ -34,42 +34,42 @@ public class EventAdapter extends ExpandableRecyclerAdapter<TitleParentViewHolde
     public void onParentItemClickListener(int position) {
         super.onParentItemClickListener(position);
 
-        //TODO GO TO EVENT VIEW
+        //TODO: GO TO EVENT VIEW
 
     }
 
     @Override
-    public TitleParentViewHolder onCreateParentViewHolder(ViewGroup viewGroup) {
+    public EventParentViewHolder onCreateParentViewHolder(ViewGroup viewGroup) {
         View view = inflater.inflate(R.layout.list_event_parent, viewGroup, false);
-        return new TitleParentViewHolder(view);
+        return new EventParentViewHolder(view);
     }
 
     @Override
-    public TitleChildViewHolder onCreateChildViewHolder(ViewGroup viewGroup) {
+    public EventChildViewHolder onCreateChildViewHolder(ViewGroup viewGroup) {
         View view = inflater.inflate(R.layout.list_event_child, viewGroup, false);
-        return new TitleChildViewHolder(view);
+        return new EventChildViewHolder(view);
     }
 
     @Override
-    public void onBindParentViewHolder(final TitleParentViewHolder titleParentViewHolder, int i, Object o) {
-        ParentItem title = (ParentItem) o;
-        titleParentViewHolder.getTextView().setText(title.getTitle());
+    public void onBindParentViewHolder(final EventParentViewHolder eventParentViewHolder, int i, Object o) {
+        EventParentItem title = (EventParentItem) o;
+        eventParentViewHolder.getTextView().setText(title.getTitle());
     }
 
     @Override
-    public void onBindChildViewHolder(TitleChildViewHolder titleChildViewHolder, int i, Object o) {
-        ChildItem title = (ChildItem)o;
-        titleChildViewHolder.expenses.setText(title.getExpenses());
-        titleChildViewHolder.participants.setText(title.getParticipants());
-        titleChildViewHolder.location.setText(title.getLocation());
-        titleChildViewHolder.expenses.setOnClickListener(new View.OnClickListener() {
+    public void onBindChildViewHolder(EventChildViewHolder eventChildViewHolder, int i, Object o) {
+        EventChildItem title = (EventChildItem)o;
+        eventChildViewHolder.expenses.setText(title.getExpenses());
+        eventChildViewHolder.participants.setText(title.getParticipants());
+        eventChildViewHolder.btnDelete.setText("DELETE THIS");
+        eventChildViewHolder.expenses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ExpenseActivity.class);
                 mContext.startActivity(intent);
             }
         });
-        titleChildViewHolder.participants.setOnClickListener(new View.OnClickListener() {
+        eventChildViewHolder.participants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ParticipantActivity.class);

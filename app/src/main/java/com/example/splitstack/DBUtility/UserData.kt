@@ -1,5 +1,7 @@
 package com.example.splitstack.DBUtility
 
+import java.io.Serializable
+
 data class UserData (
 
     val eventList:ArrayList<String>? = null,
@@ -7,5 +9,5 @@ data class UserData (
     val lastName: String? = "",
     val totalDebt: String? = "",
     val totalCredit: String? =""
-){
+):Serializable{
 }

@@ -10,27 +10,32 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.Adapter.EventAdapter;
 import com.example.splitstack.DBUtility.EventData;
-import com.example.splitstack.Models.ChildItem;
-import com.example.splitstack.Models.ParentItem;
+import com.example.splitstack.DBUtility.UserData;
+import com.example.splitstack.Models.EventChildItem;
+import com.example.splitstack.Models.EventParentItem;
 import com.example.splitstack.Models.TitleCreator;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EventListActivity extends AppCompatActivity {
 
+    private static final String TAG = "EventListActivity" ;
     RecyclerView recyclerView;
-    TabLayout tabLayout;
+    private TabLayout tabLayout;
     String uid = "";
+    UserData currentUserData;
+    ArrayList<EventData> userEventDataList = new ArrayList<>();
     FirebaseFirestore database;
 
     @Override
@@ -43,18 +48,23 @@ public class EventListActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
-
+        tabLayout= findViewById(R.id.tabLayout);
         uid = getIntent().getStringExtra("uid");
 
         database = FirebaseFirestore.getInstance();
+
+        initDbListeners();
+
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
 
-        tabLayout = findViewById(R.id.tabLayout);
 
+    }
+
+    private void initTabListeners(){
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -99,24 +109,33 @@ public class EventListActivity extends AppCompatActivity {
 
     private List<ParentObject> initData(int tabnumber) {
         //TitleCreator titleCreator = TitleCreator.get(this);
-        ArrayList<ParentItem> parentList = makeParentList();
+
+
+
+        ArrayList<EventParentItem> parentList = makeParentList();
         TitleCreator titleCreator = new TitleCreator();
-        List<ParentItem> titles = titleCreator.makeList(parentList);
+        List<EventParentItem> titles = titleCreator.makeList(parentList);
         List<ParentObject> parentObject = new ArrayList<>();
         System.out.println(titles.size());
+
+
 
 
         if(tabnumber == 1) {
             for (int i = 0; i < titles.size(); i++) {
                 List<Object> childList = new ArrayList<>();
-                childList.add(new ChildItem("expenses: 10000 SEK", "participants: " + 120, "Helsingborg"));
+                childList.add(new EventChildItem("expenses: 10000 SEK", "participants: " + 120, new Button(this)));
                 titles.get(i).setChildObjectList(childList);
                 parentObject.add(titles.get(i));
             }
-        } else if(tabnumber==2){
+
+
+
+
+        } else if(tabnumber==0){
             for (int i = 0; i < titles.size(); i++) {
                 List<Object> childList = new ArrayList<>();
-                childList.add(new ChildItem("expenses: 50 SEK", "participants: " + 120, "Helsingborg"));
+                childList.add(new EventChildItem("expenses: 50 SEK", "participants: " + 120, new Button(this)));
                 titles.get(i).setChildObjectList(childList);
                 parentObject.add(titles.get(i));
             }
@@ -132,12 +151,14 @@ public class EventListActivity extends AppCompatActivity {
 
     }
 
-    public ArrayList<ParentItem> makeParentList() {
-        ArrayList<ParentItem> parentList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            parentList.add(new ParentItem("Spain Holiday"));
+    public ArrayList<EventParentItem> makeParentList() {
+
+        ArrayList<EventParentItem> eventParentItemList = new ArrayList<>();
+
+        for (EventData eventdata : userEventDataList) {
+            eventParentItemList.add(new EventParentItem(eventdata.getEventName()));
         }
-        return parentList;
+        return eventParentItemList;
     }
 
 
@@ -179,9 +200,6 @@ public class EventListActivity extends AppCompatActivity {
 
     public void onClickAddEvent(View view) {
 
-        //This is the only way to get the variable out of the anon class below (handles closure)
-
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Give the name of the new event");
@@ -220,4 +238,60 @@ public class EventListActivity extends AppCompatActivity {
 
 
     }
+
+    public void initDbListeners(){
+
+        final DocumentReference  userRef = database.collection("users").document(uid);
+        userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    currentUserData = snapshot.toObject(UserData.class);
+                    createUserEventList();
+                    Log.d(TAG, "Current user data: " + snapshot.getData());
+                } else {
+                    Log.d(TAG, "Current user data: null");
+                }
+            }
+        });
+
+
+    }
+
+    private void createUserEventList(){
+
+        userEventDataList.clear();
+
+        for(String eventId: currentUserData.getEventList()){
+
+            final DocumentReference eventRef = database.collection("events").document(eventId);
+            eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                    @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
+
+                    if (snapshot != null && snapshot.exists()) {
+
+                        userEventDataList.add(snapshot.toObject(EventData.class));
+                        initTabListeners();
+                        Log.d(TAG, "Current event data: " + snapshot.getData());
+                    } else {
+                        Log.d(TAG, "Current event  data: null");
+                    }
+                }
+            });
+        }
+    }
+
+
 }

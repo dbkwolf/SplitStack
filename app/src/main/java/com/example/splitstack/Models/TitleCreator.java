@@ -1,19 +1,18 @@
 package com.example.splitstack.Models;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class TitleCreator {
     static TitleCreator titleCreator;
-    List<ParentItem> titleParents;
+
+    List<EventParentItem> titleParents;
 
 
     public TitleCreator(){
 //        titleParents = new ArrayList<>();
 //        for (int i = 1; i < 100; i++) {
-//            ParentItem title = new ParentItem(String.format("Event name",i));
+//            EventParentItem title = new EventParentItem(String.format("Event name",i));
 //            titleParents.add(title);
 //        }
     }
@@ -25,18 +24,20 @@ public class TitleCreator {
 //        return titleCreator;
 //    }
 
-    public List<ParentItem> makeList(ArrayList<ParentItem> parentList){
+    public List<EventParentItem> makeList(ArrayList<EventParentItem> parentList){
+
         titleParents = new ArrayList<>();
+
         for (int i = 0; i < parentList.size(); i++) {
-            ParentItem parentItem = new ParentItem(parentList.get(i).getTitle());
-            System.out.println(parentItem.getTitle());
-            titleParents.add(parentItem);
+            EventParentItem eventParentItem = new EventParentItem(parentList.get(i).getTitle());
+            System.out.println(eventParentItem.getTitle());
+            titleParents.add(eventParentItem);
 
         }
         return titleParents;
     }
 
-    public List<ParentItem> getAll() {
+    public List<EventParentItem> getAll() {
         return titleParents;
     }
 }

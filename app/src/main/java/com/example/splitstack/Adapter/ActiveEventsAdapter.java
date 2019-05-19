@@ -11,23 +11,24 @@ import com.example.splitstack.R;
 import java.util.ArrayList;
 
 public class ActiveEventsAdapter extends RecyclerView.Adapter<ActiveEventsAdapter.ActiveEventsViewHolder> {
-    private ArrayList<EventData> mExampleList;
+
+    private ArrayList<EventData> userEventDataList;
 
 
     public static class ActiveEventsViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView1;
-        public TextView mTextView2;
+        public TextView tvEventName;
+        public TextView tvParticipant;
 
         public ActiveEventsViewHolder(View itemView) {
             super(itemView);
-            mTextView1 = itemView.findViewById(R.id.eventName_textView);
-            mTextView2 = itemView.findViewById(R.id.contributor_textView);
+            tvEventName = itemView.findViewById(R.id.eventName_textView);
+            tvParticipant = itemView.findViewById(R.id.contributor_textView);
         }
     }
 
     public ActiveEventsAdapter(ArrayList<EventData> eventItems){
 
-        mExampleList = eventItems;
+        userEventDataList = eventItems;
 
     }
 
@@ -41,13 +42,13 @@ public class ActiveEventsAdapter extends RecyclerView.Adapter<ActiveEventsAdapte
 
     @Override
     public void onBindViewHolder( ActiveEventsViewHolder activeEventsViewHolder, int position) {
-        EventData currentItem = mExampleList.get(position);
-        activeEventsViewHolder.mTextView1.setText(currentItem.getEventName());
-        activeEventsViewHolder.mTextView2.setText("test");
+        EventData currentItem = userEventDataList.get(position);
+        activeEventsViewHolder.tvEventName.setText(currentItem.getEventName());
+        activeEventsViewHolder.tvParticipant.setText("test");
     }
 
     @Override
     public int getItemCount() {
-        return mExampleList.size();
+        return userEventDataList.size();
     }
 }
