@@ -80,10 +80,6 @@ public class DashboardActivity extends AppCompatActivity {
     public void goToEventList(View view) {
         Intent intent = new Intent(this, EventListActivity.class);
         intent.putExtra("uid", id);
-        Bundle extras = getIntent().getExtras();
-        assert extras != null;
-        extras.putSerializable("currentUserData", currentUserData);
-        intent.putExtras(extras);
         startActivity(intent);
     }
 
