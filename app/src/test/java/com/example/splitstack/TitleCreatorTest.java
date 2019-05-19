@@ -1,7 +1,6 @@
 package com.example.splitstack;
 
-import android.content.Context;
-import com.example.splitstack.Models.ParentItem;
+import com.example.splitstack.Models.EventParentItem;
 import com.example.splitstack.Models.TitleCreator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,7 +11,7 @@ import java.util.List;
 
 public class TitleCreatorTest {
 
-    private ArrayList<ParentItem> parentArrayList = new ArrayList<>();
+    private ArrayList<EventParentItem> parentArrayList = new ArrayList<>();
     private TitleCreator titleCreator;
     private String expectedResult;
     private String result;
@@ -25,10 +24,10 @@ public class TitleCreatorTest {
     @Test
     public void makeList() {
         System.out.println("MakeList");
-        parentArrayList.add(new ParentItem("spain"));
+        parentArrayList.add(new EventParentItem("spain"));
         titleCreator = new TitleCreator();
-        List<ParentItem> test = titleCreator.makeList(parentArrayList);
-        List<ParentItem> parentExpectedList = Arrays.asList(new ParentItem("spain"));
+        List<EventParentItem> test = titleCreator.makeList(parentArrayList);
+        List<EventParentItem> parentExpectedList = Arrays.asList(new EventParentItem("spain"));
         expectedResult = parentExpectedList.get(0).getTitle();
         result = test.get(0).getTitle();
 

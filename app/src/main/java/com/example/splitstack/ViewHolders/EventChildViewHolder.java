@@ -7,14 +7,16 @@ import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.example.splitstack.MainActivity;
 import com.example.splitstack.R;
 
-public class TitleChildViewHolder extends ChildViewHolder {
+public class EventChildViewHolder extends ChildViewHolder {
 
-    public TextView expenses, participants, location;
-    public TitleChildViewHolder(View itemView){
+    public TextView expenses, participants, btnDelete;
+
+    public EventChildViewHolder(View itemView){
+
         super(itemView);
         expenses = (TextView) itemView.findViewById(R.id.expenses);
         participants = (TextView) itemView.findViewById(R.id.participants);
-        location = (TextView) itemView.findViewById(R.id.location);
+        btnDelete = (TextView) itemView.findViewById(R.id.delete);
 
         expenses.setOnClickListener(new View.OnClickListener() {
             @Override

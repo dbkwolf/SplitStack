@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder
 import com.example.splitstack.R
 
-class TitleParentViewHolder(itemView: View) : ParentViewHolder(itemView) {
+class EventParentViewHolder(itemView: View) : ParentViewHolder(itemView) {
 
 
     var textView: TextView

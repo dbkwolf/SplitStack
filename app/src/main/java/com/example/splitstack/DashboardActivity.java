@@ -49,6 +49,7 @@ public class DashboardActivity extends AppCompatActivity {
         database = FirebaseFirestore.getInstance();
 
         findUser();
+
         myDialog = new Dialog(this);
 
 
@@ -56,13 +57,12 @@ public class DashboardActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.activeEvents_recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManage = new LinearLayoutManager(this);
-        //mAdapter = new ActiveEventsAdapter(null);
+
 
         mRecyclerView.setLayoutManager(mLayoutManage);
         mRecyclerView.setAdapter(mAdapter);
 
 
-        //  setUserID();
     }
 
     private void setUserID() {
@@ -80,6 +80,10 @@ public class DashboardActivity extends AppCompatActivity {
     public void goToEventList(View view) {
         Intent intent = new Intent(this, EventListActivity.class);
         intent.putExtra("uid", id);
+        Bundle extras = getIntent().getExtras();
+        assert extras != null;
+        extras.putSerializable("currentUserData", currentUserData);
+        intent.putExtras(extras);
         startActivity(intent);
     }
 
@@ -116,7 +120,7 @@ public class DashboardActivity extends AppCompatActivity {
                                 public void onClick(View v) {
                                     String firstName = firstName_ET.getText().toString();
                                     String lastName = lastName_ET.getText().toString();
-                                    createNewUserData(firstName, lastName);
+                                    saveNewUserData(firstName, lastName);
                                     myDialog.dismiss();
                                     System.out.println("working");
                                 }
@@ -144,7 +148,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-    public void createNewUserData(String firstName, String lastName){
+    public void saveNewUserData(String firstName, String lastName){
         UserData userData = new UserData(null, firstName, lastName, "0", "0");
         database.collection("users").document(id).set(userData);
     }
