@@ -6,4 +6,6 @@
     <string name="getStarted">Get Started</string>
     <string name="welcome">Welcome to Splitstack</string>
     <string name="title_activity_button">ButtonAct</string>
+    <string name="participant">Participants</string>
+    <string name="expenses">Expenses</string>
 </resources>

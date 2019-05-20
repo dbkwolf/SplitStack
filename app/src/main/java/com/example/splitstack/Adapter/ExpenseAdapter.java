@@ -6,31 +6,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.splitstack.ExampleItem;
+import com.example.splitstack.ExpenseItem;
 import com.example.splitstack.R;
 
 import java.util.ArrayList;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
-    private ArrayList<ExampleItem> mExampleList;
+    private ArrayList<ExpenseItem> mExampleList;
 
 
     public static class ExpenseViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
         public TextView mTextView1;
         public TextView mTextView2;
+        public TextView mTextView3;
 
         public ExpenseViewHolder(View itemView) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.imageView);
             mTextView1 = itemView.findViewById(R.id.textView);
             mTextView2 = itemView.findViewById(R.id.textView2);
+            mTextView3 = itemView.findViewById(R.id.textView3);
         }
     }
 
-    public ExpenseAdapter(ArrayList<ExampleItem> exampleItems){
+    public ExpenseAdapter(ArrayList<ExpenseItem> expenseItems){
 
-        mExampleList = exampleItems;
+        mExampleList = expenseItems;
 
     }
 
@@ -44,10 +46,11 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
 
     @Override
     public void onBindViewHolder( ExpenseViewHolder expenseViewHolder, int position) {
-    ExampleItem currentItem = mExampleList.get(position);
+    ExpenseItem currentItem = mExampleList.get(position);
 
         expenseViewHolder.mTextView1.setText(currentItem.getText1());
         expenseViewHolder.mTextView2.setText(currentItem.getText2());
+        expenseViewHolder.mTextView3.setText(currentItem.getText3());
     }
 
     @Override
