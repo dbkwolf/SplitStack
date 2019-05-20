@@ -264,32 +264,34 @@ public class EventListActivity extends AppCompatActivity {
 
     }
 
-    private void createUserEventList(){
+    private void createUserEventList() {
 
         userEventDataList.clear();
 
-        for(String eventId: currentUserData.getEventList()){
+        if (currentUserData.getEventList() != null) {
+            for (String eventId : currentUserData.getEventList()) {
 
-            final DocumentReference eventRef = database.collection("events").document(eventId);
-            eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                    @Nullable FirebaseFirestoreException e) {
-                    if (e != null) {
-                        Log.w(TAG, "Listen failed.", e);
-                        return;
+                final DocumentReference eventRef = database.collection("events").document(eventId);
+                eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
+
+                        if (snapshot != null && snapshot.exists()) {
+
+                            userEventDataList.add(snapshot.toObject(EventData.class));
+                            initTabListeners();
+                            Log.d(TAG, "Current event data: " + snapshot.getData());
+                        } else {
+                            Log.d(TAG, "Current event  data: null");
+                        }
                     }
-
-                    if (snapshot != null && snapshot.exists()) {
-
-                        userEventDataList.add(snapshot.toObject(EventData.class));
-                        initTabListeners();
-                        Log.d(TAG, "Current event data: " + snapshot.getData());
-                    } else {
-                        Log.d(TAG, "Current event  data: null");
-                    }
-                }
-            });
+                });
+            }
         }
     }
 

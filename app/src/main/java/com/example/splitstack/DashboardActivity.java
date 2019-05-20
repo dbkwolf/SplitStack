@@ -166,10 +166,10 @@ public class DashboardActivity extends AppCompatActivity {
 
                 TextView tv_amount = findViewById(R.id.activeEventsAmount_textView);
 
-                tv_amount.setText(String.valueOf(eventIdList.size()));
 
 
                 if (eventIdList != null) {
+                    tv_amount.setText(String.valueOf(eventIdList.size()));
                     for (String eventId : eventIdList) {
 
                         DocumentReference docIdRef = database.collection("events").document(eventId);
