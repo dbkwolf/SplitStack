@@ -75,7 +75,7 @@ public class ExpenseActivity extends AppCompatActivity {
         }
         if(tabNum==1){
             ExpenseAdapter adapter = new ExpenseAdapter(onParticipantClick());
-
+            
             mRecyclerView.setLayoutManager(mLayoutManage);
             mRecyclerView.setAdapter(adapter);
 
