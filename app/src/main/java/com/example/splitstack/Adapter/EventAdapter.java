@@ -93,7 +93,7 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
         eventChildViewHolder.participants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ParticipantActivity.class);
+                Intent intent = new Intent(mContext, ExpenseActivity.class);
                 mContext.startActivity(intent);
             }
         });
