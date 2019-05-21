@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
-import com.example.splitstack.ExpenseActivity;
+import com.example.splitstack.EventActivity;
 import com.example.splitstack.Models.EventChildItem;
 import com.example.splitstack.Models.EventParentItem;
 import com.example.splitstack.ParticipantActivity;
@@ -59,7 +59,7 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
         eventParentViewHolder.getCardView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ExpenseActivity.class);
+                Intent intent = new Intent(mContext, EventActivity.class);
                 intent.putExtra("uid", uid);
                 mContext.startActivity(intent);
             }
@@ -86,14 +86,14 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
         eventChildViewHolder.expenses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ExpenseActivity.class);
+                Intent intent = new Intent(mContext, EventActivity.class);
                 mContext.startActivity(intent);
             }
         });
         eventChildViewHolder.participants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ExpenseActivity.class);
+                Intent intent = new Intent(mContext, EventActivity.class);
                 mContext.startActivity(intent);
             }
         });
