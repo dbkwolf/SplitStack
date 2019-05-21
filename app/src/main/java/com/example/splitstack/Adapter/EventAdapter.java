@@ -21,11 +21,13 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
 
 
     LayoutInflater inflater;
+    String uid;
 
 
-    public EventAdapter(Context context, List<ParentObject> parentItemList) {
+    public EventAdapter(Context context, List<ParentObject> parentItemList, String uid) {
         super(context, parentItemList);
         inflater = LayoutInflater.from(context);
+        this.uid = uid;
 
     }
 
@@ -54,11 +56,30 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
     public void onBindParentViewHolder(final EventParentViewHolder eventParentViewHolder, int i, Object o) {
         EventParentItem title = (EventParentItem) o;
         eventParentViewHolder.getTextView().setText(title.getTitle());
+        eventParentViewHolder.getCardView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ExpenseActivity.class);
+                intent.putExtra("uid", uid);
+                mContext.startActivity(intent);
+            }
+        });
+
+        eventParentViewHolder.getImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                eventParentViewHolder.onClick(v);
+
+            }
+        });
+
+
     }
 
     @Override
     public void onBindChildViewHolder(EventChildViewHolder eventChildViewHolder, int i, Object o) {
-        EventChildItem title = (EventChildItem)o;
+        EventChildItem title = (EventChildItem) o;
         eventChildViewHolder.expenses.setText(title.getExpenses());
         eventChildViewHolder.participants.setText(title.getParticipants());
         eventChildViewHolder.btnDelete.setText("DELETE THIS");

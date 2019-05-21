@@ -99,7 +99,7 @@ public class EventListActivity extends AppCompatActivity {
 
     private void loadTab(int tabNum){
 
-        EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum));
+        EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum), uid);
         adapter.setParentClickableViewAnimationDefaultDuration();
         adapter.setParentAndIconExpandOnClick(true);
 
