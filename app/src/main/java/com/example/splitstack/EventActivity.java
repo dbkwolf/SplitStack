@@ -11,7 +11,7 @@ import com.example.splitstack.Adapter.ExpenseAdapter;
 
 import java.util.ArrayList;
 
-public class ExpenseActivity extends AppCompatActivity {
+public class EventActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManage;

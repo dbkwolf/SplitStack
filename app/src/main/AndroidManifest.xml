@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".CreateEventActivity" />
         <activity android:name=".EventListActivity" />
-        <activity android:name=".ExpenseActivity" />
+        <activity android:name=".EventActivity" />
         <activity android:name=".ParticipantActivity" />
         <activity android:name=".DashboardActivity" />
         <activity android:name=".MainActivity">
