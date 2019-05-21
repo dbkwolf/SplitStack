@@ -59,8 +59,7 @@ public class EventListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-
+        initTabListeners();
 
     }
 
@@ -81,6 +80,7 @@ public class EventListActivity extends AppCompatActivity {
                 }
                 if (tab.getPosition() == 2) {
 
+                    System.out.println(userEventDataList.size());
 
                 }
             }
@@ -112,27 +112,27 @@ public class EventListActivity extends AppCompatActivity {
 
 
 
-        ArrayList<EventParentItem> parentList = makeParentList();
-        TitleCreator titleCreator = new TitleCreator();
-        List<EventParentItem> titles = titleCreator.makeList(parentList);
-        List<ParentObject> parentObject = new ArrayList<>();
-        System.out.println(titles.size());
+            ArrayList<EventParentItem> parentList = makeParentList();
+            TitleCreator titleCreator = new TitleCreator();
+            List<EventParentItem> titles = titleCreator.makeList(parentList);
+            List<ParentObject> parentObject = new ArrayList<>();
+            System.out.println(titles.size());
 
 
 
 
-        if(tabnumber == 1) {
-            for (int i = 0; i < titles.size(); i++) {
-                List<Object> childList = new ArrayList<>();
-                childList.add(new EventChildItem("expenses: 10000 SEK", "participants: " + 120, new Button(this)));
-                titles.get(i).setChildObjectList(childList);
-                parentObject.add(titles.get(i));
-            }
+            if(tabnumber == 1) {
+                for (int i = 0; i < titles.size(); i++) {
+                    List<Object> childList = new ArrayList<>();
+                    childList.add(new EventChildItem("expenses: 10000 SEK", "participants: " + 120, new Button(this)));
+                    titles.get(i).setChildObjectList(childList);
+                    parentObject.add(titles.get(i));
+                }
 
 
 
 
-        } else if(tabnumber==0){
+            } else if(tabnumber==0){
             for (int i = 0; i < titles.size(); i++) {
                 List<Object> childList = new ArrayList<>();
                 childList.add(new EventChildItem("expenses: 50 SEK", "participants: " + 120, new Button(this)));
@@ -222,6 +222,8 @@ public class EventListActivity extends AppCompatActivity {
 
                 saveNewEventToDb(newEventName);
 
+                //TODO CHANGE TO EVENT
+
             }
 
         });
@@ -284,7 +286,9 @@ public class EventListActivity extends AppCompatActivity {
                         if (snapshot != null && snapshot.exists()) {
 
                             userEventDataList.add(snapshot.toObject(EventData.class));
-                            initTabListeners();
+
+                            loadTab(0);
+
                             Log.d(TAG, "Current event data: " + snapshot.getData());
                         } else {
                             Log.d(TAG, "Current event  data: null");
