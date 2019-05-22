@@ -13,6 +13,4 @@ data class EventData (
 {
     var id: String? = ""
 
-
-
 }

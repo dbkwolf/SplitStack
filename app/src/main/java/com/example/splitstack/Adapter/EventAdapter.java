@@ -10,7 +10,6 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.EventActivity;
 import com.example.splitstack.Models.EventChildItem;
 import com.example.splitstack.Models.EventParentItem;
-import com.example.splitstack.ParticipantActivity;
 import com.example.splitstack.R;
 import com.example.splitstack.ViewHolders.EventChildViewHolder;
 import com.example.splitstack.ViewHolders.EventParentViewHolder;
