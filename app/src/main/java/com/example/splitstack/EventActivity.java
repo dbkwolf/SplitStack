@@ -323,13 +323,19 @@ public class EventActivity extends AppCompatActivity {
 
     public void addParticipant(String participant){
 
-        if (!uid.equals("")) {
+        if (!participant.equals("")) {
 
             DocumentReference eventRef = database.collection("events").document(eventId);
 
             eventRef.update("participants", FieldValue.arrayUnion(participant));
 
+
+            DocumentReference userRef = database.collection("users").document(participant);
+            userRef.update("eventList", FieldValue.arrayUnion(eventId));
+
         }
+
+
 
 
 
