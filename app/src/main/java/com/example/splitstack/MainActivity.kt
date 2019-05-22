@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.blockstack.android.sdk.*
 
 
-private const val username = "dev_android_sdk.id.blockstack"
+private const val username = "dev_android_sdk.uuid.blockstack"
 private var usersId = ""
 private var decentralizedIdForUser = ""
 

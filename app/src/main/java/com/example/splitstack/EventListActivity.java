@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.Adapter.EventAdapter;
 import com.example.splitstack.DBUtility.EventData;
@@ -26,11 +27,10 @@ import com.google.firebase.firestore.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class EventListActivity extends AppCompatActivity {
 
-    private static final String TAG = "EventListActivity" ;
+    private static final String TAG = "EventListActivity";
     RecyclerView recyclerView;
     private TabLayout tabLayout;
     String uid = "";
@@ -48,7 +48,7 @@ public class EventListActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
-        tabLayout= findViewById(R.id.tabLayout);
+        tabLayout = findViewById(R.id.tabLayout);
         uid = getIntent().getStringExtra("uid");
 
         database = FirebaseFirestore.getInstance();
@@ -63,7 +63,7 @@ public class EventListActivity extends AppCompatActivity {
 
     }
 
-    private void initTabListeners(){
+    private void initTabListeners() {
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -80,7 +80,7 @@ public class EventListActivity extends AppCompatActivity {
                 }
                 if (tab.getPosition() == 2) {
 
-                    System.out.println(userEventDataList.size());
+                  loadTab(2);
 
                 }
             }
@@ -97,50 +97,100 @@ public class EventListActivity extends AppCompatActivity {
         });
     }
 
-    private void loadTab(int tabNum){
+    private void loadTab(int tabNum) {
 
-        EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum), uid);
-        adapter.setParentClickableViewAnimationDefaultDuration();
-        adapter.setParentAndIconExpandOnClick(true);
+        if (initData(tabNum)!= null) {
 
-        recyclerView.setAdapter(adapter);
+            EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum), uid);
+            adapter.setParentClickableViewAnimationDefaultDuration();
+            adapter.setParentAndIconExpandOnClick(true);
+
+            recyclerView.setAdapter(adapter);
+        }
 
     }
 
     private List<ParentObject> initData(int tabnumber) {
         //TitleCreator titleCreator = TitleCreator.get(this);
 
+        ArrayList<EventData> activeEventList = new ArrayList<>();
+        ArrayList<EventData> closedEventList = new ArrayList<>();
+
+        List<ParentObject> parentObject = null;
+
+        if(userEventDataList!=null) {
+
+            for (EventData eD : userEventDataList) {
+                if (eD.isActive()) {
+                    activeEventList.add(eD);
+                } else {
+                    closedEventList.add(eD);
+                }
+            }
+
+            parentObject = new ArrayList<>();
+
+            if (tabnumber == 1) {
+
+                ArrayList<EventParentItem> parentList = makeParentList(activeEventList);
+                TitleCreator titleCreator = new TitleCreator();
+                List<EventParentItem> titles = titleCreator.makeList(parentList);
 
 
-            ArrayList<EventParentItem> parentList = makeParentList();
-            TitleCreator titleCreator = new TitleCreator();
-            List<EventParentItem> titles = titleCreator.makeList(parentList);
-            List<ParentObject> parentObject = new ArrayList<>();
-            System.out.println(titles.size());
-
-
-
-
-            if(tabnumber == 1) {
                 for (int i = 0; i < titles.size(); i++) {
+
+
+                    String totalExpenses = "Total: " + userEventDataList.get(i).getTotalExpenses();
+                    String participants = "Participants: ";
+
+                    for (String p : activeEventList.get(i).getParticipants()) {
+                        participants = participants.concat(" " + p);
+                    }
+
+                    Button dltButton = new Button(this);
+                    dltButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            Toast.makeText(EventListActivity.this, "Poof!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
                     List<Object> childList = new ArrayList<>();
-                    childList.add(new EventChildItem("expenses: 10000 SEK", "participants: " + 120, new Button(this)));
+                    childList.add(new EventChildItem(totalExpenses, participants, dltButton));
                     titles.get(i).setChildObjectList(childList);
                     parentObject.add(titles.get(i));
+
                 }
 
 
+            } else if (tabnumber == 0) {
+
+                ArrayList<EventParentItem> parentList = makeParentList(closedEventList);
+                TitleCreator titleCreator = new TitleCreator();
+                List<EventParentItem> titles = titleCreator.makeList(parentList);
 
 
-            } else if(tabnumber==0){
-            for (int i = 0; i < titles.size(); i++) {
-                List<Object> childList = new ArrayList<>();
-                childList.add(new EventChildItem("expenses: 50 SEK", "participants: " + 120, new Button(this)));
-                titles.get(i).setChildObjectList(childList);
-                parentObject.add(titles.get(i));
+                for (int i = 0; i < titles.size(); i++) {
+                    List<Object> childList = new ArrayList<>();
+                    childList.add(new EventChildItem("expenses: 50 SEK", "participants: " + 120, new Button(this)));
+                    titles.get(i).setChildObjectList(childList);
+                    parentObject.add(titles.get(i));
+                }
+            } else if (tabnumber == 2) {
+
+                ArrayList<EventParentItem> parentList = makeParentList(closedEventList);
+                TitleCreator titleCreator = new TitleCreator();
+                List<EventParentItem> titles = titleCreator.makeList(parentList);
+
+
+                for (int i = 0; i < titles.size(); i++) {
+                    List<Object> childList = new ArrayList<>();
+                    childList.add(new EventChildItem("expenses: 50 SEK", "participants: " + 120, new Button(this)));
+                    titles.get(i).setChildObjectList(childList);
+                    parentObject.add(titles.get(i));
+                }
             }
-        }
 
+        }
 
         return parentObject;
     }
@@ -151,12 +201,12 @@ public class EventListActivity extends AppCompatActivity {
 
     }
 
-    public ArrayList<EventParentItem> makeParentList() {
+    public ArrayList<EventParentItem> makeParentList(ArrayList<EventData> eventList) {
 
         ArrayList<EventParentItem> eventParentItemList = new ArrayList<>();
 
-        for (EventData eventdata : userEventDataList) {
-            eventParentItemList.add(new EventParentItem(eventdata.getEventName()));
+        for (EventData eventdata : eventList) {
+            eventParentItemList.add(new EventParentItem(eventdata.getEventName(), eventdata.getId()));
         }
         return eventParentItemList;
     }
@@ -241,9 +291,9 @@ public class EventListActivity extends AppCompatActivity {
 
     }
 
-    public void initDbListeners(){
+    public void initDbListeners() {
 
-        final DocumentReference  userRef = database.collection("users").document(uid);
+        final DocumentReference userRef = database.collection("users").document(uid);
         userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
@@ -271,7 +321,7 @@ public class EventListActivity extends AppCompatActivity {
         userEventDataList.clear();
 
         if (currentUserData.getEventList() != null) {
-            for (String eventId : currentUserData.getEventList()) {
+            for (final String eventId : currentUserData.getEventList()) {
 
                 final DocumentReference eventRef = database.collection("events").document(eventId);
                 eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -286,8 +336,11 @@ public class EventListActivity extends AppCompatActivity {
                         if (snapshot != null && snapshot.exists()) {
 
                             userEventDataList.add(snapshot.toObject(EventData.class));
+                            userEventDataList.get(userEventDataList.size()-1).setId(eventId);
 
-                            loadTab(0);
+                            tabLayout.getTabAt(1).select();
+
+                            loadTab(1);
 
                             Log.d(TAG, "Current event data: " + snapshot.getData());
                         } else {

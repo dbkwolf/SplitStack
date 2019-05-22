@@ -20,14 +20,16 @@ import java.util.List;
 public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolder, EventChildViewHolder> {
 
 
-    LayoutInflater inflater;
-    String uid;
+    private LayoutInflater inflater;
+    private String uid;
 
 
-    public EventAdapter(Context context, List<ParentObject> parentItemList, String uid) {
+
+    public EventAdapter(Context context, List<ParentObject> parentItemList, String uid ) {
         super(context, parentItemList);
         inflater = LayoutInflater.from(context);
         this.uid = uid;
+
 
     }
 
@@ -54,13 +56,14 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
 
     @Override
     public void onBindParentViewHolder(final EventParentViewHolder eventParentViewHolder, int i, Object o) {
-        EventParentItem title = (EventParentItem) o;
+        final EventParentItem title = (EventParentItem) o;
         eventParentViewHolder.getTextView().setText(title.getTitle());
         eventParentViewHolder.getCardView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, EventActivity.class);
                 intent.putExtra("uid", uid);
+                intent.putExtra("eventId", title.getEventId());
                 mContext.startActivity(intent);
             }
         });

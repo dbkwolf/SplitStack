@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 import com.example.splitstack.Adapter.ExpenseAdapter;
 
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ public class EventActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManage;
     private TabLayout tabLayout;
+    private String uid;
+    private String eventId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +39,10 @@ public class EventActivity extends AppCompatActivity {
         mAdapter = new ExpenseAdapter(expenseList);
         mRecyclerView.setLayoutManager(mLayoutManage);
         mRecyclerView.setAdapter(mAdapter);
+
+        uid = getIntent().getStringExtra("uid");
+        eventId = getIntent().getStringExtra("eventId");
+        Toast.makeText(this, "Event ID Is:" + eventId, Toast.LENGTH_LONG).show();
 
         initTabListeners();
     }

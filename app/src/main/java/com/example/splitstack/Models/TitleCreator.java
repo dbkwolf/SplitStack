@@ -29,7 +29,7 @@ public class TitleCreator {
         titleParents = new ArrayList<>();
 
         for (int i = 0; i < parentList.size(); i++) {
-            EventParentItem eventParentItem = new EventParentItem(parentList.get(i).getTitle());
+            EventParentItem eventParentItem = new EventParentItem(parentList.get(i).getTitle(), parentList.get(i).getEventId());
             System.out.println(eventParentItem.getTitle());
             titleParents.add(eventParentItem);
 
