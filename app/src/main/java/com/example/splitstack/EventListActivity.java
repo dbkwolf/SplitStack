@@ -171,7 +171,7 @@ public class EventListActivity extends AppCompatActivity {
 
                 for (int i = 0; i < titles.size(); i++) {
                     List<Object> childList = new ArrayList<>();
-                    childList.add(new EventChildItem("expenses: 50 SEK", "participants: " + 120, new Button(this)));
+                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, new Button(this)));
                     titles.get(i).setChildObjectList(childList);
                     parentObject.add(titles.get(i));
                 }
@@ -184,7 +184,7 @@ public class EventListActivity extends AppCompatActivity {
 
                 for (int i = 0; i < titles.size(); i++) {
                     List<Object> childList = new ArrayList<>();
-                    childList.add(new EventChildItem("expenses: 50 SEK", "participants: " + 120, new Button(this)));
+                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, new Button(this)));
                     titles.get(i).setChildObjectList(childList);
                     parentObject.add(titles.get(i));
                 }
@@ -195,11 +195,7 @@ public class EventListActivity extends AppCompatActivity {
         return parentObject;
     }
 
-    public void createButton(View view) {
-        Intent intent = new Intent(this, CreateEventActivity.class);
-        startActivity(intent);
 
-    }
 
     public ArrayList<EventParentItem> makeParentList(ArrayList<EventData> eventList) {
 
@@ -219,7 +215,7 @@ public class EventListActivity extends AppCompatActivity {
 
     public void saveNewEventToDb(String newEventName) {
 
-        //create list of participants adding the current user
+        //create list of participant adding the current user
         ArrayList<String> participantList = new ArrayList<>();
         participantList.add(uid);
 
