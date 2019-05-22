@@ -124,7 +124,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                             //UserData userData = new UserData(null, firstName, lastName, "0", "0");
                             // Add a new document with a generated ID
-                            //database.collection("users").document(id).set(userData);
+                            //database.collection("users").document(uuid).set(userData);
 
                             myDialog.show();
 
