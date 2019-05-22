@@ -12,7 +12,7 @@ public class CreateEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_event);
+        setContentView(R.layout.add_expense_dialog);
     }
     public void addUserButton(View view){
 
@@ -20,9 +20,10 @@ public class CreateEventActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(getApplicationContext(), "Participant _______ added", Toast.LENGTH_LONG);
         toast.show();
 
-        TextView textView8 = findViewById(R.id.editText8);
 
-        textView8.setText("");
+
+
+
 
     }
     public void createButton(View view){

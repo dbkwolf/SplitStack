@@ -2,13 +2,16 @@ package com.example.splitstack.DBUtility
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ServerTimestamp
-import com.google.type.Date
+import java.util.*
+
 
 class ExpenseData(
 
-    val expenseId: String? = "",
+    val eventId: String? = "",
+    val title: String? = "",
     val amount: String? ="",
+    val userId: String? ="",
     @ServerTimestamp
     var timestamp: Date? = null
 
-) {}
+) {  var id: String? = ""}
