@@ -11,6 +11,7 @@ class ExpenseData(
     val title: String? = "",
     val amount: String? ="",
     val userId: String? ="",
+    val uName: String? ="",
     @ServerTimestamp
     var timestamp: Date? = null
 
