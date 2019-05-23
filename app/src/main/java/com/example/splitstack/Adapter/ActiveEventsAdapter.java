@@ -43,8 +43,13 @@ public class ActiveEventsAdapter extends RecyclerView.Adapter<ActiveEventsAdapte
     @Override
     public void onBindViewHolder( ActiveEventsViewHolder activeEventsViewHolder, int position) {
         EventData currentItem = userEventDataList.get(position);
+
+
+
+
+
         activeEventsViewHolder.tvEventName.setText(currentItem.getEventName());
-        activeEventsViewHolder.tvParticipant.setText("test");
+        activeEventsViewHolder.tvParticipant.setText(currentItem.getTotalExpenses());
     }
 
     @Override
