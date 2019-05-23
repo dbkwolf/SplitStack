@@ -317,8 +317,6 @@ public class EventActivity extends AppCompatActivity {
                 });
 
 
-
-
     }
 
     public void addParticipant(String participant){
