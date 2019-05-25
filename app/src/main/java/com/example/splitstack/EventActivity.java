@@ -313,10 +313,10 @@ public class EventActivity extends AppCompatActivity {
                         }
 
                         tabLayout.getTabAt(0).select();
-                        sendNotification("");
+                        sendNotification("An new expense was added to one of your trips");
 
 
-                        Log.d(TAG, "Current Expenses list : " +  eventExpenses);
+                        Log.d(TAG, "Current Expenses list : " +  eventExpenses.toString());
                     }
                 });
 
@@ -365,6 +365,7 @@ public class EventActivity extends AppCompatActivity {
 
                     loadTab(0);
 
+                    sendNotification("An new participant was added to one of your trips");
 
                     Log.d(TAG, "Current event data: " + snapshot.getData());
                 } else {
