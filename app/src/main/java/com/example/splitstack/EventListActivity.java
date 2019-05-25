@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -19,10 +20,13 @@ import android.widget.Toast;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.Adapter.EventAdapter;
 import com.example.splitstack.DBUtility.EventData;
+import com.example.splitstack.DBUtility.ExpenseData;
 import com.example.splitstack.DBUtility.UserData;
 import com.example.splitstack.Models.EventChildItem;
 import com.example.splitstack.Models.EventParentItem;
 import com.example.splitstack.Models.TitleCreator;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
 
 import java.util.ArrayList;
@@ -310,7 +314,14 @@ public class EventListActivity extends AppCompatActivity {
         });
 
 
+
+
+
+
+
     }
+
+
 
     private void createUserEventList() {
 
@@ -320,7 +331,35 @@ public class EventListActivity extends AppCompatActivity {
             for (final String eventId : currentUserData.getEventList()) {
 
                 final DocumentReference eventRef = database.collection("events").document(eventId);
-                eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+
+
+                eventRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                userEventDataList.add(document.toObject(EventData.class));
+                                userEventDataList.get(userEventDataList.size()-1).setId(eventId);
+
+                                tabLayout.getTabAt(1).select();
+
+                                loadTab(1);
+
+                                Log.d(TAG, "Current event data: " + document.getData());
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+
+                //-----------------------------------------------------------------------------------------------
+
+                /*eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot snapshot,
                                         @Nullable FirebaseFirestoreException e) {
@@ -330,6 +369,8 @@ public class EventListActivity extends AppCompatActivity {
                         }
 
                         if (snapshot != null && snapshot.exists()) {
+
+
 
                             userEventDataList.add(snapshot.toObject(EventData.class));
                             userEventDataList.get(userEventDataList.size()-1).setId(eventId);
@@ -343,7 +384,7 @@ public class EventListActivity extends AppCompatActivity {
                             Log.d(TAG, "Current event  data: null");
                         }
                     }
-                });
+                });*/
             }
         }
     }

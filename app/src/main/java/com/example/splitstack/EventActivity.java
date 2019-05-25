@@ -23,12 +23,11 @@ import com.example.splitstack.DBUtility.EventData;
 import com.example.splitstack.DBUtility.ExpenseData;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.*;
+import com.google.firebase.firestore.EventListener;
 import org.blockstack.android.sdk.BlockstackConfig;
 import org.blockstack.android.sdk.BlockstackSession;
 
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
+import java.util.*;
 
 
 public class EventActivity extends AppCompatActivity {
@@ -281,6 +280,8 @@ public class EventActivity extends AppCompatActivity {
 
 
 
+
+
         //Save the new document key (needed to update the userdata)
         final String expenseId = expensKey.getId();
 
@@ -334,9 +335,6 @@ public class EventActivity extends AppCompatActivity {
         }
 
 
-
-
-
     }
 
 
@@ -355,6 +353,9 @@ public class EventActivity extends AppCompatActivity {
                 if (snapshot != null && snapshot.exists()) {
 
                     eventData=snapshot.toObject(EventData.class);
+
+                   auxUpdateEventList(eventData.getParticipants());
+
                     tvEventName.setText(eventData.getEventName());
 
                     tabLayout.getTabAt(0).select();
@@ -371,11 +372,20 @@ public class EventActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent =new Intent(this, EventListActivity.class);
-        intent.putExtra("uid", uid);
-        startActivity(intent);
+    public void auxUpdateEventList(ArrayList<String> participants){
+
+
+        for (String p:  participants ) {
+
+            DocumentReference userRef = database.collection("users").document(p);
+            Map<String, Object> map = new HashMap<>();
+            map.put("timestamp", FieldValue.serverTimestamp());
+            userRef.set(map, SetOptions.merge());
+
+
+        }
 
     }
+
+
 }
