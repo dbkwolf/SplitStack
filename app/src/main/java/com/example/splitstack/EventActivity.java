@@ -354,7 +354,7 @@ public class EventActivity extends AppCompatActivity {
 
                     eventData=snapshot.toObject(EventData.class);
 
-                   auxUpdateEventList(eventData.getParticipants());
+
 
                     tvEventName.setText(eventData.getEventName());
 
@@ -372,20 +372,7 @@ public class EventActivity extends AppCompatActivity {
 
     }
 
-    public void auxUpdateEventList(ArrayList<String> participants){
 
-
-        for (String p:  participants ) {
-
-            DocumentReference userRef = database.collection("users").document(p);
-            Map<String, Object> map = new HashMap<>();
-            map.put("timestamp", FieldValue.serverTimestamp());
-            userRef.set(map, SetOptions.merge());
-
-
-        }
-
-    }
 
 
 }
