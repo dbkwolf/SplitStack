@@ -430,7 +430,10 @@ public class EventActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         //math goes here and dialog or toast.
                         amountDueSpliter();
-                        //Toast toast = new Toast()
+                        Toast toast =Toast.makeText(getApplicationContext(),"You paid!",Toast.LENGTH_LONG);
+                       // toast.setMargin(50,50);
+                        toast.show();
+                        myDialog.dismiss();
                     }
                 });
 
