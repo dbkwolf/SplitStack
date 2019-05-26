@@ -20,13 +20,15 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         public TextView mTextView1;
         public TextView mTextView2;
         public TextView mTextView3;
+        public TextView mTextView4;
 
         public ExpenseViewHolder(View itemView) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.imageView);
             mTextView1 = itemView.findViewById(R.id.textView);
-            mTextView2 = itemView.findViewById(R.id.textView2);
+            mTextView2 = itemView.findViewById(R.id.tv_expense_amount);
             mTextView3 = itemView.findViewById(R.id.textView3);
+            mTextView4 = itemView.findViewById(R.id.tv_timestamp);
         }
     }
 
@@ -51,6 +53,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         expenseViewHolder.mTextView1.setText(currentItem.getTitle());
         expenseViewHolder.mTextView2.setText(currentItem.getAmount());
         expenseViewHolder.mTextView3.setText(currentItem.getParticipant());
+        expenseViewHolder.mTextView4.setText(currentItem.getTimestamp());
 }
 
     @Override
@@ -58,4 +61,15 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
        return mExampleList.size();
         //return 0;
     }
+
+    public String getItemStringId(int position){
+        ExpenseItem  currentItem = mExampleList.get(position);
+        return currentItem.getId();
+    }
+
+    public String getItemAmount(int position){
+        ExpenseItem  currentItem = mExampleList.get(position);
+        return currentItem.getAmount();
+    }
+
 }
