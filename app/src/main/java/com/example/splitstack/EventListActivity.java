@@ -1,10 +1,14 @@
 package com.example.splitstack;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -25,12 +29,15 @@ import com.example.splitstack.DBUtility.UserData;
 import com.example.splitstack.Models.EventChildItem;
 import com.example.splitstack.Models.EventParentItem;
 import com.example.splitstack.Models.TitleCreator;
+import com.example.splitstack.SQLite.SQLiteHelper;
+import com.example.splitstack.SQLite.UserHistoryContract;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EventListActivity extends AppCompatActivity {
@@ -42,6 +49,7 @@ public class EventListActivity extends AppCompatActivity {
     UserData currentUserData;
     ArrayList<EventData> userEventDataList = new ArrayList<>();
     FirebaseFirestore database;
+    private SQLiteHelper sqlHelper = new SQLiteHelper(this);
 
 
     @Override
@@ -356,6 +364,59 @@ public class EventListActivity extends AppCompatActivity {
                 });
             }
         }
+    }
+
+    public void saveHistory(Date date, String activityStr, String user) {
+
+        SQLiteDatabase sqliteDatabase = sqlHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(UserHistoryContract.HistoryEntry.COLUMN_NAME_DATE, date.toString());
+        values.put(UserHistoryContract.HistoryEntry.COLUMN_NAME_ACTIVITY, activityStr);
+        values.put(UserHistoryContract.HistoryEntry.COLUMN_NAME_USER, user);
+
+
+        Long newRowId = sqliteDatabase.insert(UserHistoryContract.HistoryEntry.TABLE_NAME, null, values);
+    }
+
+    public ArrayList<String> readHistory() {
+
+        SQLiteDatabase sqliteDatabase = sqlHelper.getReadableDatabase();
+
+        String[] projection = new String[]{BaseColumns._ID,
+                UserHistoryContract.HistoryEntry.COLUMN_NAME_DATE,
+                UserHistoryContract.HistoryEntry.COLUMN_NAME_ACTIVITY,
+                UserHistoryContract.HistoryEntry.COLUMN_NAME_USER};
+
+        Cursor cursor = sqliteDatabase.query(
+                UserHistoryContract.HistoryEntry.TABLE_NAME,  // The table to query
+                projection,                         // The array of columns to return (pass null to get all)
+                null,
+                null,
+                null,                      // don't group the rows
+                null,                       // don't filter by row groups
+                null                       // don't sort
+        );
+
+        ArrayList<String> outputArr = new ArrayList<>();
+
+        if (cursor != null) {
+            if (cursor.moveToNext()) {
+                String id = cursor.getString(cursor.getColumnIndex(BaseColumns._ID));
+                String date = cursor.getString(cursor.getColumnIndex(UserHistoryContract.HistoryEntry.COLUMN_NAME_DATE));
+                String activity = cursor.getString(cursor.getColumnIndex(UserHistoryContract.HistoryEntry.COLUMN_NAME_ACTIVITY));
+                String user = cursor.getString(cursor.getColumnIndex(UserHistoryContract.HistoryEntry.COLUMN_NAME_USER));
+
+                outputArr.add("On " + date + " user " + user + "made the following changes: " +activity);
+
+            }
+
+            cursor.close();
+        }
+
+        return outputArr;
+
     }
 
 

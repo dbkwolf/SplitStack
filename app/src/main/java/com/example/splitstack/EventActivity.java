@@ -98,6 +98,8 @@ public class EventActivity extends AppCompatActivity {
 
         for (ExpenseData ed : eventExpenses) {
 
+
+
             list.add(new ExpenseItem(ed.getTitle(), ed.getAmount(), ed.getUserId()));
 
         }
@@ -377,14 +379,6 @@ public class EventActivity extends AppCompatActivity {
 
     }
 
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, EventListActivity.class);
-        intent.putExtra("uid", uid);
-        startActivity(intent);
-
-    }
 
     // this code is from the firebase github for notifications with minor changes to work with our code.
     private void sendNotification(String messageBody) {
