@@ -15,13 +15,17 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.EditText;
 
+import android.widget.Toast;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.Adapter.EventAdapter;
 import com.example.splitstack.DBUtility.EventData;
@@ -62,6 +66,13 @@ public class EventListActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setTitle(" My Events");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.ic_toolbar_icon);
+
         tabLayout = findViewById(R.id.tabLayout);
         uid = getIntent().getStringExtra("uid");
 
@@ -76,6 +87,30 @@ public class EventListActivity extends AppCompatActivity {
         initTabListeners();
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_favorite) {
+            Toast.makeText(this, readHistory().toString(), Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void initTabListeners() {
 
@@ -316,7 +351,9 @@ public class EventListActivity extends AppCompatActivity {
 
                 if (snapshot != null && snapshot.exists()) {
                     currentUserData = snapshot.toObject(UserData.class);
+                    saveHistory(new Date(), "User was added to an event: " + currentUserData.toString(), uid);
                     createUserEventList();
+
                     Log.d(TAG, "Current user data: " + snapshot.getData());
                 } else {
                     Log.d(TAG, "Current user data: null");
@@ -345,6 +382,7 @@ public class EventListActivity extends AppCompatActivity {
                             if (document.exists()) {
                                 userEventDataList.add(document.toObject(EventData.class));
                                 userEventDataList.get(userEventDataList.size() - 1).setId(eventId);
+
 
                                 tabLayout.getTabAt(1).select();
 
@@ -428,36 +466,3 @@ public class EventListActivity extends AppCompatActivity {
     }
 }
 
-                //-----------------------------------------------------------------------------------------------
-
-                /*eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
-
-                        if (snapshot != null && snapshot.exists()) {
-
-                            userEventDataList.add(snapshot.toObject(EventData.class));
-                            userEventDataList.get(userEventDataList.size()-1).setId(eventId);
-
-                            tabLayout.getTabAt(1).select();
-
-                            loadTab(1);
-
-                            Log.d(TAG, "Current event data: " + snapshot.getData());
-                        } else {
-                            Log.d(TAG, "Current event  data: null");
-                        }
-                    }
-                });
-            }
-        }
-    }
-
-
-
-}*/

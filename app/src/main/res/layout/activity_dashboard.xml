@@ -14,6 +14,7 @@
         android:layout_marginBottom="8dp"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
+        app:titleTextColor="@color/colorTextOnPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintBottom_toTopOf="@+id/dueIn_View"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
