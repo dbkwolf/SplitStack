@@ -58,18 +58,28 @@
         app:layout_constraintTop_toTopOf="@id/constraintLayout2"
         app:layout_constraintStart_toStartOf="@id/constraintLayout2"/>
 
+    <View
+        android:id="@+id/view3"
+        android:layout_width="395dp"
+        android:layout_height="520dp"
+        android:layout_marginBottom="104dp"
+        android:background="@drawable/radius_recyclerview"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tabLayout"
+        app:layout_constraintStart_toStartOf="@+id/tabLayout"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+        app:layout_constraintVertical_bias="0.0" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="393dp"
-        android:layout_height="430dp"
-        android:layout_marginStart="8dp"
-
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/add_event_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="395dp"
+        android:layout_height="480dp"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view3"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toBottomOf="@+id/tabLayout"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -122,10 +132,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="15dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="onClickAddEvent"
-
         android:src="@drawable/sharp_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
