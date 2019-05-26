@@ -354,6 +354,16 @@ public class EventListActivity extends AppCompatActivity {
             }
         }
     }
+
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        createUserEventList();
+
+    }
 }
 
                 //-----------------------------------------------------------------------------------------------

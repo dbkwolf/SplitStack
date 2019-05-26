@@ -165,6 +165,7 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
                                         }
                                     }
 
+
                                     docRef.update("eventList", userEvents);
 
                                     Log.d(TAG, "Current event data: " + document.getData());
