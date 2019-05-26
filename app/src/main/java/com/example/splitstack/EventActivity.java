@@ -4,16 +4,19 @@ import android.app.*;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,8 +24,12 @@ import android.view.View;
 import android.widget.*;
 import com.example.splitstack.Adapter.ExpenseAdapter;
 import com.example.splitstack.Adapter.ParticipantAdapter;
+import com.example.splitstack.Controllers.SwipeController;
+import com.example.splitstack.Controllers.SwipeControllerActions;
 import com.example.splitstack.DBUtility.EventData;
 import com.example.splitstack.DBUtility.ExpenseData;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.*;
 
@@ -45,6 +52,9 @@ public class EventActivity extends AppCompatActivity {
     private ArrayList<ExpenseData> eventExpenses;
     private EventData eventData;
     private Dialog myDialog;
+    SwipeController swipeController = null;
+    ItemTouchHelper itemTouchhelper;
+    ExpenseAdapter adapter;
     private double totalForSettleOutText = 0.1;
 
     @Override
@@ -81,15 +91,49 @@ public class EventActivity extends AppCompatActivity {
         myDialog = new Dialog(this);
 
 
+
+
+
     }
 
+
+    public void deleteExpense( String expenseId,final String amount) {
+
+
+
+   database.collection("expenses").document(expenseId)
+            .delete()
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+
+                    DocumentReference eventRef = database.collection("events").document(eventId);
+
+                    Double updatedExpenses = Double.valueOf(eventData.getTotalExpenses()) - Double.valueOf(amount.replace("SEK", ""));
+
+                    eventRef.update("totalExpenses", updatedExpenses.toString());
+
+                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error deleting document", e);
+                }
+            });
+
+
+    }
 
     public ArrayList<ExpenseItem> onExpenseClick() {
         ArrayList<ExpenseItem> list = new ArrayList<>();
 
         for (ExpenseData ed : eventExpenses) {
 
-            list.add(new ExpenseItem(ed.getTitle(), ed.getAmount(), ed.getUserId()));
+            String formattedAmount = String.format("%.2f", Double.valueOf(ed.getAmount())).concat(" SEK");
+
+            list.add(new ExpenseItem(ed.getTitle(), formattedAmount, ed.getUserId(), ed.getTimestamp().toString(), ed.getId()));
 
         }
 
@@ -112,7 +156,7 @@ public class EventActivity extends AppCompatActivity {
 
     public String calculateTotalContributions(String participant) {
 
-        Double amount = 0.0;
+        Double amount = 0.00;
 
 
         for (ExpenseData ed : eventExpenses) {
@@ -121,19 +165,45 @@ public class EventActivity extends AppCompatActivity {
             }
         }
 
-        return amount.toString();
+
+        return String.format("%.2f", Double.valueOf(amount));
 
     }
 
 
     private void loadTab(int tabNum) {
 
-        if (tabNum == 0) {
-            ExpenseAdapter adapter = new ExpenseAdapter(onExpenseClick());
 
+
+        if (tabNum == 0) {
+
+            final ExpenseAdapter adapter = new ExpenseAdapter(onExpenseClick());
 
             mRecyclerView.setLayoutManager(mLayoutManage);
             mRecyclerView.setAdapter(adapter);
+
+            swipeController = new SwipeController(new SwipeControllerActions() {
+                @Override
+                public void onRightClicked(int position) {
+                    super.onRightClicked(position);
+
+                    String expenseId = adapter.getItemStringId(position);
+                    String expenseAmount = adapter.getItemAmount(position);
+
+                    deleteExpense(expenseId, expenseAmount);
+
+                }
+            });
+            itemTouchhelper = new ItemTouchHelper(swipeController);
+            itemTouchhelper.attachToRecyclerView(mRecyclerView);
+
+            mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+                @Override
+                public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                    swipeController.onDraw(c);
+                }
+            });
+
         }
         if (tabNum == 1) {
 
@@ -299,13 +369,14 @@ public class EventActivity extends AppCompatActivity {
                         eventExpenses.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.get("eventId") != null) {
+
                                 eventExpenses.add(doc.toObject(ExpenseData.class));
 
                             }
                         }
 
                         tabLayout.getTabAt(0).select();
-                        sendNotification("An new expense was added to one of your trips");
+                        sendNotification("Hey, someone made some cahanges to your event: " + eventData.getEventName());
 
 
                         Log.d(TAG, "Current Expenses list : " + eventExpenses.toString());
@@ -443,8 +514,11 @@ public class EventActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //math goes here and dialog or toast.
+
+
                         //  amountDueSpliter();
                         Toast toast = Toast.makeText(getApplicationContext(), "You paid!", Toast.LENGTH_LONG);
+
                         toast.show();
                         Intent intent = new Intent(EventActivity.this, EventListActivity.class);
                         myDialog.dismiss();

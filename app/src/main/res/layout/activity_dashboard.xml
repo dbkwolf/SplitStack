@@ -6,12 +6,26 @@
     android:layout_height="match_parent"
     android:background="#cfd8dc">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintBottom_toTopOf="@+id/dueIn_View"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+
+
     <View
         android:id="@+id/dueIn_View"
         android:layout_width="179dp"
         android:layout_height="130dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/radius"
         android:elevation="8dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,13 +70,12 @@
         android:layout_width="184dp"
         android:layout_height="130dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/radius"
         android:clickable="true"
         android:elevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.166"
         app:layout_constraintStart_toEndOf="@+id/dueIn_View"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -101,8 +114,8 @@
         android:layout_width="377dp"
         android:layout_height="230dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
         android:background="@drawable/radius_big"
         android:elevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,7 +128,6 @@
         android:layout_width="374dp"
         android:layout_height="311dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/radius_big"
@@ -123,10 +135,10 @@
         android:onClick="goToEventList"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.523"
+        app:layout_constraintHorizontal_bias="0.714"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dontKnow_View"
-        app:layout_constraintVertical_bias="0.285" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/activeEvents_recyclerView"
