@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -20,13 +19,10 @@ import android.widget.Toast;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.Adapter.EventAdapter;
 import com.example.splitstack.DBUtility.EventData;
-import com.example.splitstack.DBUtility.ExpenseData;
 import com.example.splitstack.DBUtility.UserData;
 import com.example.splitstack.Models.EventChildItem;
 import com.example.splitstack.Models.EventParentItem;
 import com.example.splitstack.Models.TitleCreator;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
 
 import java.util.ArrayList;
@@ -41,7 +37,6 @@ public class EventListActivity extends AppCompatActivity {
     UserData currentUserData;
     ArrayList<EventData> userEventDataList = new ArrayList<>();
     FirebaseFirestore database;
-    Button dltButton ;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -65,7 +60,6 @@ public class EventListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         initTabListeners();
-
 
     }
 
@@ -107,7 +101,11 @@ public class EventListActivity extends AppCompatActivity {
 
         if (initData(tabNum)!= null) {
 
-            EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum), uid);
+
+
+            EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum), uid, database);
+            List<ParentObject> parentObject = initData(tabNum);
+
             adapter.setParentClickableViewAnimationDefaultDuration();
             adapter.setParentAndIconExpandOnClick(true);
 
@@ -153,21 +151,15 @@ public class EventListActivity extends AppCompatActivity {
                         participants = participants.concat(" " + p);
                     }
 
-                    Button btn = new Button(this);
-                    btn.setText("DDLLTT");
-
-                    btn.setOnClickListener(new View.OnClickListener() {
-                        @Override
+                    Button dltButton = new Button(this);
+                    dltButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
-
-                            Toast.makeText(EventListActivity.this, "POOF", Toast.LENGTH_LONG).show();
-
+                            Toast.makeText(EventListActivity.this, "Poof!", Toast.LENGTH_LONG).show();
                         }
                     });
 
-
                     List<Object> childList = new ArrayList<>();
-                    childList.add(new EventChildItem(totalExpenses, participants, btn));
+                    childList.add(new EventChildItem(totalExpenses, participants, titles.get(i).getEventId(), activeEventList.get(i).getParticipants()));
                     titles.get(i).setChildObjectList(childList);
                     parentObject.add(titles.get(i));
 
@@ -183,23 +175,24 @@ public class EventListActivity extends AppCompatActivity {
 
                 for (int i = 0; i < titles.size(); i++) {
                     List<Object> childList = new ArrayList<>();
-                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, new Button(this)));
+                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, titles.get(i).getEventId(), closedEventList.get(i).getParticipants() ));
                     titles.get(i).setChildObjectList(childList);
                     parentObject.add(titles.get(i));
                 }
             } else if (tabnumber == 2) {
 
-                ArrayList<EventParentItem> parentList = makeParentList(closedEventList);
-                TitleCreator titleCreator = new TitleCreator();
-                List<EventParentItem> titles = titleCreator.makeList(parentList);
+//                ArrayList<EventParentItem> parentList = makeParentList(closedEventList);
+//                TitleCreator titleCreator = new TitleCreator();
+//                List<EventParentItem> titles = titleCreator.makeList(parentList);
+//
 
-
-                for (int i = 0; i < titles.size(); i++) {
-                    List<Object> childList = new ArrayList<>();
-                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, new Button(this)));
-                    titles.get(i).setChildObjectList(childList);
-                    parentObject.add(titles.get(i));
-                }
+//                for (int i = 0; i < titles.size(); i++) {
+//                    List<Object> childList = new ArrayList<>();
+//                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, titles.get(i).getEventId()));
+//                    titles.get(i).setChildObjectList(childList);
+//                    parentObject.add(titles.get(i));
+//                }
+//            }
             }
 
         }
@@ -321,9 +314,8 @@ public class EventListActivity extends AppCompatActivity {
             }
         });
 
+
     }
-
-
 
     private void createUserEventList() {
 
@@ -372,8 +364,6 @@ public class EventListActivity extends AppCompatActivity {
 
                         if (snapshot != null && snapshot.exists()) {
 
-
-
                             userEventDataList.add(snapshot.toObject(EventData.class));
                             userEventDataList.get(userEventDataList.size()-1).setId(eventId);
 
@@ -386,7 +376,7 @@ public class EventListActivity extends AppCompatActivity {
                             Log.d(TAG, "Current event  data: null");
                         }
                     }
-                });*/
+                });
             }
         }
     }

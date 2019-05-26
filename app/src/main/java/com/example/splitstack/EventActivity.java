@@ -371,6 +371,4 @@ public class EventActivity extends AppCompatActivity {
     }
 
 
-
-
 }

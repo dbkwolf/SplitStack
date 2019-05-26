@@ -19,7 +19,13 @@
         android:top="-280dp">
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
-            <solid android:color="@color/colorSecondaryDark" />
+            <gradient
+                android:angle="45"
+
+                android:endColor="#cfff95"
+                android:gradientRadius="500"
+                android:startColor="#00838f"
+                android:type="linear" />
 
         </shape>
     </item>
