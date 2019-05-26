@@ -23,12 +23,11 @@ import com.example.splitstack.DBUtility.EventData;
 import com.example.splitstack.DBUtility.ExpenseData;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.*;
+import com.google.firebase.firestore.EventListener;
 import org.blockstack.android.sdk.BlockstackConfig;
 import org.blockstack.android.sdk.BlockstackSession;
 
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
+import java.util.*;
 
 
 public class EventActivity extends AppCompatActivity {
@@ -334,9 +333,6 @@ public class EventActivity extends AppCompatActivity {
         }
 
 
-
-
-
     }
 
 
@@ -355,6 +351,9 @@ public class EventActivity extends AppCompatActivity {
                 if (snapshot != null && snapshot.exists()) {
 
                     eventData=snapshot.toObject(EventData.class);
+
+
+
                     tvEventName.setText(eventData.getEventName());
 
                     tabLayout.getTabAt(0).select();
@@ -371,12 +370,5 @@ public class EventActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        Intent intent =new Intent(this, EventListActivity.class);
-//        intent.putExtra("uid", uid);
-//        startActivity(intent);
-//
-//    }
 
 }
