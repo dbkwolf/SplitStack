@@ -2,7 +2,8 @@ package com.example.splitstack;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
+
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,9 +15,9 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
+
 import android.widget.EditText;
-import android.widget.Toast;
+
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.Adapter.EventAdapter;
 import com.example.splitstack.DBUtility.EventData;
@@ -27,6 +28,7 @@ import com.example.splitstack.Models.TitleCreator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ public class EventListActivity extends AppCompatActivity {
     UserData currentUserData;
     ArrayList<EventData> userEventDataList = new ArrayList<>();
     FirebaseFirestore database;
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -146,19 +149,18 @@ public class EventListActivity extends AppCompatActivity {
                 for (int i = 0; i < titles.size(); i++) {
 
 
-                    String totalExpenses = "Total: " + userEventDataList.get(i).getTotalExpenses();
+                    String formattedTotal = String.format("%.2f", Double.valueOf(userEventDataList.get(i).getTotalExpenses()));
+
+                    Log.d(TAG, "TOTAL EVENT AMOUNT: " + formattedTotal);
+
+                    String totalExpenses = "Total: " + formattedTotal + " SEK";
                     String participants = "Participants: ";
 
                     for (String p : activeEventList.get(i).getParticipants()) {
                         participants = participants.concat(" " + p);
                     }
 
-                    Button dltButton = new Button(this);
-                    dltButton.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            Toast.makeText(EventListActivity.this, "Poof!", Toast.LENGTH_LONG).show();
-                        }
-                    });
+
 
                     List<Object> childList = new ArrayList<>();
                     childList.add(new EventChildItem(totalExpenses, participants, titles.get(i).getEventId(), activeEventList.get(i).getParticipants()));
