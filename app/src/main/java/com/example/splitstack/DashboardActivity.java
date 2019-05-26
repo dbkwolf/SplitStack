@@ -202,4 +202,14 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        System.out.println();
+        findUser();
+
+
+    }
+
 }

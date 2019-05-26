@@ -1,12 +1,16 @@
 package com.example.splitstack;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.app.*;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,10 +18,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.example.splitstack.Adapter.ExpenseAdapter;
 import com.example.splitstack.Adapter.ParticipantAdapter;
 import com.example.splitstack.DBUtility.EventData;
@@ -32,8 +33,10 @@ import java.util.*;
 
 
 public class EventActivity extends AppCompatActivity {
+    private static final String TAG = "EventActivity";
+    FirebaseFirestore database;
     private RecyclerView mRecyclerView;
-
+    private ArrayList participantsList;
     private TextView tvEventName;
     private RecyclerView.LayoutManager mLayoutManage;
     private TabLayout tabLayout;
@@ -41,9 +44,8 @@ public class EventActivity extends AppCompatActivity {
     private String eventId;
     private ArrayList<ExpenseData> eventExpenses;
     private EventData eventData;
-    FirebaseFirestore database;
     private Dialog myDialog;
-    private static final String TAG = "EventActivity";
+    private double totalForSettleOutText = 0.1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,16 +75,10 @@ public class EventActivity extends AppCompatActivity {
         mLayoutManage = new LinearLayoutManager(this);
 
 
-
         Toast.makeText(this, "Event ID Is:" + eventId, Toast.LENGTH_LONG).show();
 
 
-
-
         myDialog = new Dialog(this);
-
-
-
 
 
     }
@@ -91,7 +87,7 @@ public class EventActivity extends AppCompatActivity {
     public ArrayList<ExpenseItem> onExpenseClick() {
         ArrayList<ExpenseItem> list = new ArrayList<>();
 
-        for(ExpenseData ed : eventExpenses){
+        for (ExpenseData ed : eventExpenses) {
 
             list.add(new ExpenseItem(ed.getTitle(), ed.getAmount(), ed.getUserId()));
 
@@ -107,28 +103,27 @@ public class EventActivity extends AppCompatActivity {
         for (String participant: eventData.getParticipants()){
             list.add(new ParticipantItem(participant, calculateTotalContributions(participant)));
 
-        }
 
+        }
 
 
         return list;
     }
 
-    public String calculateTotalContributions(String participant){
+    public String calculateTotalContributions(String participant) {
 
         Double amount = 0.0;
 
 
-            for(ExpenseData ed: eventExpenses){
-                if(ed.getUserId().equals(participant)){
-                    amount = amount+ Double.valueOf(ed.getAmount());
-                }
+        for (ExpenseData ed : eventExpenses) {
+            if (ed.getUserId().equals(participant)) {
+                amount = amount + Double.valueOf(ed.getAmount());
             }
+        }
 
-            return amount.toString();
+        return amount.toString();
 
     }
-
 
 
     private void loadTab(int tabNum) {
@@ -211,7 +206,7 @@ public class EventActivity extends AppCompatActivity {
 
                 myDialog.show();
 
-            }else if(tabLayout.getSelectedTabPosition() == 1) {
+            } else if (tabLayout.getSelectedTabPosition() == 1) {
 
                 //ADD PARTICIPANT
 
@@ -238,7 +233,6 @@ public class EventActivity extends AppCompatActivity {
                         addParticipant(newParticipant);
 
 
-
                     }
 
                 });
@@ -261,7 +255,7 @@ public class EventActivity extends AppCompatActivity {
     public void saveExpensesData(String expenseTitle, String expenseAmount) {
 
         //DocumentReference userNameRef = database.collection("users").document(uid);
-       String userNameStr = "YOLO";//userNameRef.get().getResult().toObject(UserData.class).getFirstName();
+        String userNameStr = "YOLO";//userNameRef.get().getResult().toObject(UserData.class).getFirstName();
 
 
         ExpenseData newExpenseData = new ExpenseData(eventId, expenseTitle, expenseAmount, uid, userNameStr, new Timestamp(new Date()).toDate());
@@ -281,7 +275,6 @@ public class EventActivity extends AppCompatActivity {
         Double totalExp = Double.valueOf(eventData.getTotalExpenses()) + Double.valueOf(expenseAmount);
 
         eventRef.update("totalExpenses", totalExp.toString());
-
 
 
         //Save the new document key (needed to update the userdata)
@@ -312,17 +305,17 @@ public class EventActivity extends AppCompatActivity {
                         }
 
                         tabLayout.getTabAt(0).select();
+                        sendNotification("An new expense was added to one of your trips");
 
 
-
-                        Log.d(TAG, "Current Expenses list : " +  eventExpenses);
+                        Log.d(TAG, "Current Expenses list : " + eventExpenses.toString());
                     }
                 });
 
 
     }
 
-    public void addParticipant(String participant){
+    public void addParticipant(String participant) {
 
         if (!participant.equals("")) {
 
@@ -340,7 +333,7 @@ public class EventActivity extends AppCompatActivity {
     }
 
 
-    public void DbParticipantListener(){
+    public void DbParticipantListener() {
 
         final DocumentReference eventRef = database.collection("events").document(eventId);
         eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -364,6 +357,7 @@ public class EventActivity extends AppCompatActivity {
 
                     loadTab(0);
 
+                    sendNotification("An new participant was added to one of your trips");
 
                     Log.d(TAG, "Current event data: " + snapshot.getData());
                 } else {
@@ -374,5 +368,134 @@ public class EventActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, EventListActivity.class);
+        intent.putExtra("uid", uid);
+        startActivity(intent);
+
+    }
+
+    // this code is from the firebase github for notifications with minor changes to work with our code.
+    private void sendNotification(String messageBody) {
+        Intent intent = new Intent(this, EventListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        String channelId = getString(R.string.default_notification_channel_id);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setContentTitle(getString(R.string.fcm_message))
+                        .setContentText(messageBody)
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    public void settleUp(View view) {
+        Double totalExp = Double.valueOf(eventData.getTotalExpenses());
+
+        if (!eventId.equals("")) {
+
+
+            if (tabLayout.getSelectedTabPosition() == 0) {
+
+                //ADD EXPENSE
+
+                myDialog.setContentView(R.layout.settle_accounts);
+                TextView totalAmountText = myDialog.findViewById(R.id.totalAmountTextView);
+                totalAmountText.setText(totalExp.toString());
+                fillingParticipantArrayListForListView();
+                ListView listview = myDialog.findViewById(R.id.participantsListView);
+
+                StableArrayAdapter adapter = new StableArrayAdapter(this,
+                        android.R.layout.simple_list_item_1, participantsList);
+                listview.setAdapter(adapter);
+
+                TextView userPayTextView = myDialog.findViewById(R.id.usersMustPayTextview);
+                userPayTextView.setText(Double.toString(amountDueSpliter()));
+                Button btnAddExpense = myDialog.findViewById(R.id.btn_add_expense);
+
+
+                btnAddExpense.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //math goes here and dialog or toast.
+                        amountDueSpliter();
+                        Toast toast =Toast.makeText(getApplicationContext(),"You paid!",Toast.LENGTH_LONG);
+                       // toast.setMargin(50,50);
+                        toast.show();
+                        myDialog.dismiss();
+                    }
+                });
+
+                myDialog.show();
+            }
+        }
+    }
+
+    public ArrayList<ExpenseItem> fillingParticipantArrayListForListView() {
+
+        participantsList = new ArrayList<>();
+
+        for (String participant : eventData.getParticipants()) {
+            participantsList.add(participant);
+        }
+
+        return participantsList;
+
+    }
+
+    public double amountDueSpliter() {
+        Double indivudalPromisedAmount = Double.valueOf(eventData.getTotalExpenses()) / participantsList.size();
+        double amountDue = 0;
+        double userContribution = Double.parseDouble(calculateTotalContributions(uid));
+        amountDue = indivudalPromisedAmount - userContribution;
+        System.out.println("The amount due for the user is !! " + amountDue + " sek.");
+        return amountDue;
+
+    }
+
+    private class StableArrayAdapter extends ArrayAdapter<String> {
+
+        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+
+        public StableArrayAdapter(Context context, int textViewResourceId,
+                                  List<String> objects) {
+            super(context, textViewResourceId, objects);
+            for (int i = 0; i < objects.size(); ++i) {
+                mIdMap.put(objects.get(i), i);
+            }
+        }
+
+        @Override
+        public long getItemId(int position) {
+            String item = getItem(position);
+            return mIdMap.get(item);
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
+
+    }
 
 }
