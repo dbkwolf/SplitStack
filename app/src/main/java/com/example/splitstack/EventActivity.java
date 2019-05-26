@@ -14,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.widget.*;
 import com.example.splitstack.Adapter.ExpenseAdapter;
 import com.example.splitstack.Adapter.ParticipantAdapter;
+import com.example.splitstack.Controllers.SwipeController;
 import com.example.splitstack.DBUtility.EventData;
 import com.example.splitstack.DBUtility.ExpenseData;
 import com.google.firebase.Timestamp;
@@ -45,6 +47,8 @@ public class EventActivity extends AppCompatActivity {
     private ArrayList<ExpenseData> eventExpenses;
     private EventData eventData;
     private Dialog myDialog;
+    SwipeController swipeController;
+    ItemTouchHelper itemTouchhelper;
     private double totalForSettleOutText = 0.1;
 
     @Override
@@ -79,6 +83,11 @@ public class EventActivity extends AppCompatActivity {
 
 
         myDialog = new Dialog(this);
+
+        swipeController = new SwipeController();
+
+        itemTouchhelper = new ItemTouchHelper(swipeController);
+        itemTouchhelper.attachToRecyclerView(mRecyclerView);
 
 
     }
