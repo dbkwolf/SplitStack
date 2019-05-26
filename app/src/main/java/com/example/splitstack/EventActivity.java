@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.splitstack.Adapter.ExpenseAdapter;
+import com.example.splitstack.Adapter.ParticipantAdapter;
 import com.example.splitstack.DBUtility.EventData;
 import com.example.splitstack.DBUtility.ExpenseData;
 import com.google.firebase.Timestamp;
@@ -100,11 +101,11 @@ public class EventActivity extends AppCompatActivity {
         return list;
     }
 
-    public ArrayList<ExpenseItem> onParticipantClick() {
-        ArrayList<ExpenseItem> list = new ArrayList<>();
+    public ArrayList<ParticipantItem> onParticipantClick() {
+        ArrayList<ParticipantItem> list = new ArrayList<>();
 
         for (String participant: eventData.getParticipants()){
-            list.add(new ExpenseItem("", calculateTotalContributions(participant), participant));
+            list.add(new ParticipantItem(participant, calculateTotalContributions(participant)));
 
         }
 
@@ -140,7 +141,9 @@ public class EventActivity extends AppCompatActivity {
             mRecyclerView.setAdapter(adapter);
         }
         if (tabNum == 1) {
-            ExpenseAdapter adapter = new ExpenseAdapter(onParticipantClick());
+
+            ParticipantAdapter adapter = new ParticipantAdapter(onParticipantClick());
+           // ExpenseAdapter adapter = new ExpenseAdapter(onParticipantClick());
 
             mRecyclerView.setLayoutManager(mLayoutManage);
             mRecyclerView.setAdapter(adapter);
