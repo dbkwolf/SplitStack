@@ -2,6 +2,8 @@ package com.example.splitstack.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,10 @@ import com.example.splitstack.Models.EventParentItem;
 import com.example.splitstack.R;
 import com.example.splitstack.ViewHolders.EventChildViewHolder;
 import com.example.splitstack.ViewHolders.EventParentViewHolder;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -21,14 +27,15 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
 
     private LayoutInflater inflater;
     private String uid;
+    FirebaseFirestore database;
 
 
 
-    public EventAdapter(Context context, List<ParentObject> parentItemList, String uid ) {
+    public EventAdapter(Context context, List<ParentObject> parentItemList, String uid, FirebaseFirestore database) {
         super(context, parentItemList);
         inflater = LayoutInflater.from(context);
         this.uid = uid;
-
+        this.database = database;
 
     }
 
@@ -80,8 +87,8 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
     }
 
     @Override
-    public void onBindChildViewHolder(EventChildViewHolder eventChildViewHolder, int i, Object o) {
-        EventChildItem title = (EventChildItem) o;
+    public void onBindChildViewHolder(final EventChildViewHolder eventChildViewHolder, int i, Object o) {
+        final EventChildItem title = (EventChildItem) o;
         eventChildViewHolder.expenses.setText(title.getExpenses());
         eventChildViewHolder.participants.setText(title.getParticipants());
         eventChildViewHolder.btnDelete.setText("DELETE THIS");
@@ -99,6 +106,37 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
                 mContext.startActivity(intent);
             }
         });
+
+        eventChildViewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                database.collection("events").document(title.getEventId())
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                            }
+                        }
+
+                        )
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        }
+                        );
+
+
+                for(String userId : title.getUserId()){
+                   DocumentReference docRef = database.collection("users").document(userId);
+
+                }
+            }
+
+        });
+
+
 
     }
 }

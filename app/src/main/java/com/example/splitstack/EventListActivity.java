@@ -105,7 +105,7 @@ public class EventListActivity extends AppCompatActivity {
 
 
 
-            EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum), uid);
+            EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum), uid, database);
             List<ParentObject> parentObject = initData(tabNum);
 
             adapter.setParentClickableViewAnimationDefaultDuration();
@@ -162,7 +162,7 @@ public class EventListActivity extends AppCompatActivity {
                     });
 
                     List<Object> childList = new ArrayList<>();
-                    childList.add(new EventChildItem(totalExpenses, participants, dltButton));
+                    childList.add(new EventChildItem(totalExpenses, participants, titles.get(i).getEventId(), activeEventList.get(i).getParticipants()));
                     titles.get(i).setChildObjectList(childList);
                     parentObject.add(titles.get(i));
 
@@ -178,23 +178,24 @@ public class EventListActivity extends AppCompatActivity {
 
                 for (int i = 0; i < titles.size(); i++) {
                     List<Object> childList = new ArrayList<>();
-                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, new Button(this)));
+                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, titles.get(i).getEventId(), closedEventList.get(i).getParticipants() ));
                     titles.get(i).setChildObjectList(childList);
                     parentObject.add(titles.get(i));
                 }
             } else if (tabnumber == 2) {
 
-                ArrayList<EventParentItem> parentList = makeParentList(closedEventList);
-                TitleCreator titleCreator = new TitleCreator();
-                List<EventParentItem> titles = titleCreator.makeList(parentList);
+//                ArrayList<EventParentItem> parentList = makeParentList(closedEventList);
+//                TitleCreator titleCreator = new TitleCreator();
+//                List<EventParentItem> titles = titleCreator.makeList(parentList);
+//
 
-
-                for (int i = 0; i < titles.size(); i++) {
-                    List<Object> childList = new ArrayList<>();
-                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, new Button(this)));
-                    titles.get(i).setChildObjectList(childList);
-                    parentObject.add(titles.get(i));
-                }
+//                for (int i = 0; i < titles.size(); i++) {
+//                    List<Object> childList = new ArrayList<>();
+//                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, titles.get(i).getEventId()));
+//                    titles.get(i).setChildObjectList(childList);
+//                    parentObject.add(titles.get(i));
+//                }
+//            }
             }
 
         }
