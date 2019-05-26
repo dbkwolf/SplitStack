@@ -32,6 +32,8 @@ import java.util.*;
 
 
 public class EventActivity extends AppCompatActivity {
+    private static final String TAG = "EventActivity";
+    FirebaseFirestore database;
     private RecyclerView mRecyclerView;
     private ArrayList participantsList;
     private TextView tvEventName;
@@ -41,10 +43,9 @@ public class EventActivity extends AppCompatActivity {
     private String eventId;
     private ArrayList<ExpenseData> eventExpenses;
     private EventData eventData;
-    FirebaseFirestore database;
     private Dialog myDialog;
-    private static final String TAG = "EventActivity";
     private double totalForSettleOutText = 0.1;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,16 +74,10 @@ public class EventActivity extends AppCompatActivity {
         mLayoutManage = new LinearLayoutManager(this);
 
 
-
         Toast.makeText(this, "Event ID Is:" + eventId, Toast.LENGTH_LONG).show();
 
 
-
-
         myDialog = new Dialog(this);
-
-
-
 
 
     }
@@ -91,7 +86,7 @@ public class EventActivity extends AppCompatActivity {
     public ArrayList<ExpenseItem> onExpenseClick() {
         ArrayList<ExpenseItem> list = new ArrayList<>();
 
-        for(ExpenseData ed : eventExpenses){
+        for (ExpenseData ed : eventExpenses) {
 
             list.add(new ExpenseItem(ed.getTitle(), ed.getAmount(), ed.getUserId()));
 
@@ -104,31 +99,29 @@ public class EventActivity extends AppCompatActivity {
     public ArrayList<ExpenseItem> onParticipantClick() {
         ArrayList<ExpenseItem> list = new ArrayList<>();
 
-        for (String participant: eventData.getParticipants()){
+        for (String participant : eventData.getParticipants()) {
             list.add(new ExpenseItem("", calculateTotalContributions(participant), participant));
 
         }
 
 
-
         return list;
     }
 
-    public String calculateTotalContributions(String participant){
+    public String calculateTotalContributions(String participant) {
 
         Double amount = 0.0;
 
 
-            for(ExpenseData ed: eventExpenses){
-                if(ed.getUserId().equals(participant)){
-                    amount = amount+ Double.valueOf(ed.getAmount());
-                }
+        for (ExpenseData ed : eventExpenses) {
+            if (ed.getUserId().equals(participant)) {
+                amount = amount + Double.valueOf(ed.getAmount());
             }
+        }
 
-            return amount.toString();
+        return amount.toString();
 
     }
-
 
 
     private void loadTab(int tabNum) {
@@ -208,7 +201,7 @@ public class EventActivity extends AppCompatActivity {
 
                 myDialog.show();
 
-            }else if(tabLayout.getSelectedTabPosition() == 1) {
+            } else if (tabLayout.getSelectedTabPosition() == 1) {
 
                 //ADD PARTICIPANT
 
@@ -235,7 +228,6 @@ public class EventActivity extends AppCompatActivity {
                         addParticipant(newParticipant);
 
 
-
                     }
 
                 });
@@ -258,7 +250,7 @@ public class EventActivity extends AppCompatActivity {
     public void saveExpensesData(String expenseTitle, String expenseAmount) {
 
         //DocumentReference userNameRef = database.collection("users").document(uid);
-       String userNameStr = "YOLO";//userNameRef.get().getResult().toObject(UserData.class).getFirstName();
+        String userNameStr = "YOLO";//userNameRef.get().getResult().toObject(UserData.class).getFirstName();
 
 
         ExpenseData newExpenseData = new ExpenseData(eventId, expenseTitle, expenseAmount, uid, userNameStr, new Timestamp(new Date()).toDate());
@@ -278,7 +270,6 @@ public class EventActivity extends AppCompatActivity {
         Double totalExp = Double.valueOf(eventData.getTotalExpenses()) + Double.valueOf(expenseAmount);
 
         eventRef.update("totalExpenses", totalExp.toString());
-
 
 
         //Save the new document key (needed to update the userdata)
@@ -312,14 +303,14 @@ public class EventActivity extends AppCompatActivity {
                         sendNotification("An new expense was added to one of your trips");
 
 
-                        Log.d(TAG, "Current Expenses list : " +  eventExpenses.toString());
+                        Log.d(TAG, "Current Expenses list : " + eventExpenses.toString());
                     }
                 });
 
 
     }
 
-    public void addParticipant(String participant){
+    public void addParticipant(String participant) {
 
         if (!participant.equals("")) {
 
@@ -334,13 +325,10 @@ public class EventActivity extends AppCompatActivity {
         }
 
 
-
-
-
     }
 
 
-    public void DbParticipantListener(){
+    public void DbParticipantListener() {
 
         final DocumentReference eventRef = database.collection("events").document(eventId);
         eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -354,7 +342,7 @@ public class EventActivity extends AppCompatActivity {
 
                 if (snapshot != null && snapshot.exists()) {
 
-                    eventData=snapshot.toObject(EventData.class);
+                    eventData = snapshot.toObject(EventData.class);
                     tvEventName.setText(eventData.getEventName());
 
                     tabLayout.getTabAt(0).select();
@@ -374,12 +362,13 @@ public class EventActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent =new Intent(this, EventListActivity.class);
+        Intent intent = new Intent(this, EventListActivity.class);
         intent.putExtra("uid", uid);
         startActivity(intent);
 
     }
-// this code is from the firebase github for notifications with minor changes to work with our code.
+
+    // this code is from the firebase github for notifications with minor changes to work with our code.
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, EventListActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -410,7 +399,8 @@ public class EventActivity extends AppCompatActivity {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
-    public void settleUp(View view){
+
+    public void settleUp(View view) {
         Double totalExp = Double.valueOf(eventData.getTotalExpenses());
 
         if (!eventId.equals("")) {
@@ -421,15 +411,17 @@ public class EventActivity extends AppCompatActivity {
                 //ADD EXPENSE
 
                 myDialog.setContentView(R.layout.settle_accounts);
-               TextView totalAmountText = (TextView) myDialog.findViewById(R.id.totalAmountTextView);
+                TextView totalAmountText = myDialog.findViewById(R.id.totalAmountTextView);
                 totalAmountText.setText(totalExp.toString());
                 fillingParticipantArrayListForListView();
-                ListView listview = (ListView) myDialog.findViewById(R.id.participantsListView);
+                ListView listview = myDialog.findViewById(R.id.participantsListView);
 
                 StableArrayAdapter adapter = new StableArrayAdapter(this,
                         android.R.layout.simple_list_item_1, participantsList);
                 listview.setAdapter(adapter);
 
+                TextView userPayTextView = myDialog.findViewById(R.id.usersMustPayTextview);
+                userPayTextView.setText(Double.toString(amountDueSpliter()));
                 Button btnAddExpense = myDialog.findViewById(R.id.btn_add_expense);
 
 
@@ -437,6 +429,8 @@ public class EventActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //math goes here and dialog or toast.
+                        amountDueSpliter();
+                        //Toast toast = new Toast()
                     }
                 });
 
@@ -444,17 +438,29 @@ public class EventActivity extends AppCompatActivity {
             }
         }
     }
-    public ArrayList<ExpenseItem> fillingParticipantArrayListForListView(){
 
-         participantsList = new ArrayList<>();
+    public ArrayList<ExpenseItem> fillingParticipantArrayListForListView() {
 
-          for (String participant: eventData.getParticipants()){
-              participantsList.add(participant);
-          }
+        participantsList = new ArrayList<>();
 
-        return  participantsList;
+        for (String participant : eventData.getParticipants()) {
+            participantsList.add(participant);
+        }
 
-  }
+        return participantsList;
+
+    }
+
+    public double amountDueSpliter() {
+        Double indivudalPromisedAmount = Double.valueOf(eventData.getTotalExpenses()) / participantsList.size();
+        double amountDue = 0;
+        double userContribution = Double.parseDouble(calculateTotalContributions(uid));
+        amountDue = indivudalPromisedAmount - userContribution;
+        System.out.println("The amount due for the user is !! " + amountDue + " sek.");
+        return amountDue;
+
+    }
+
     private class StableArrayAdapter extends ArrayAdapter<String> {
 
         HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
