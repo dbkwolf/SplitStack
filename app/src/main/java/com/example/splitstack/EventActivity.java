@@ -482,17 +482,31 @@ public class EventActivity extends AppCompatActivity {
                 //ADD EXPENSE
 
                 myDialog.setContentView(R.layout.settle_accounts);
-                TextView totalAmountText = myDialog.findViewById(R.id.totalAmountTextView);
-                totalAmountText.setText(totalExp.toString());
-                fillingParticipantArrayListForListView();
-                ListView listview = myDialog.findViewById(R.id.participantsListView);
 
+                TextView totalAmountText = myDialog.findViewById(R.id.totalAmountTextView);
+                totalAmountText.setText(totalExp.toString().concat(" SEK"));
+
+                fillingParticipantArrayListForListView();
+
+                ListView listview = myDialog.findViewById(R.id.participantsListView);
                 StableArrayAdapter adapter = new StableArrayAdapter(this,
                         android.R.layout.simple_list_item_1, participantsList);
                 listview.setAdapter(adapter);
 
+                TextView YouOwetextView = myDialog.findViewById(R.id.youPayTextView);
+
+                if (amountDueSpliter() > 0) {
+                    YouOwetextView.setText("Pay :");
+                } else {
+                    YouOwetextView.setText("Owed");
+                }
                 TextView userPayTextView = myDialog.findViewById(R.id.usersMustPayTextview);
-                userPayTextView.setText(Double.toString(amountDueSpliter()));
+                double amountdue = Math.abs(amountDueSpliter());
+                //String formatedString =(Math.abs(amountdue));
+                String tryingToFormatAgainStringPleaseWork = String.format("%.2f",amountdue).concat(" SEK");
+                userPayTextView.setText(tryingToFormatAgainStringPleaseWork);
+
+
                 Button btnAddExpense = myDialog.findViewById(R.id.btn_add_expense);
 
 
@@ -500,11 +514,15 @@ public class EventActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //math goes here and dialog or toast.
-                        amountDueSpliter();
+
+
+                        //  amountDueSpliter();
                         Toast toast = Toast.makeText(getApplicationContext(), "You paid!", Toast.LENGTH_LONG);
-                        // toast.setMargin(50,50);
+
                         toast.show();
+                        Intent intent = new Intent(EventActivity.this, EventListActivity.class);
                         myDialog.dismiss();
+                        startActivity(intent);
                     }
                 });
 
@@ -559,5 +577,6 @@ public class EventActivity extends AppCompatActivity {
         }
 
     }
+
 
 }
