@@ -41,6 +41,7 @@ public class EventListActivity extends AppCompatActivity {
     UserData currentUserData;
     ArrayList<EventData> userEventDataList = new ArrayList<>();
     FirebaseFirestore database;
+    Button dltButton ;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -64,6 +65,7 @@ public class EventListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         initTabListeners();
+
 
     }
 
@@ -151,15 +153,21 @@ public class EventListActivity extends AppCompatActivity {
                         participants = participants.concat(" " + p);
                     }
 
-                    Button dltButton = new Button(this);
-                    dltButton.setOnClickListener(new View.OnClickListener() {
+                    Button btn = new Button(this);
+                    btn.setText("DDLLTT");
+
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
                         public void onClick(View v) {
-                            Toast.makeText(EventListActivity.this, "Poof!", Toast.LENGTH_LONG).show();
+
+                            Toast.makeText(EventListActivity.this, "POOF", Toast.LENGTH_LONG).show();
+
                         }
                     });
 
+
                     List<Object> childList = new ArrayList<>();
-                    childList.add(new EventChildItem(totalExpenses, participants, dltButton));
+                    childList.add(new EventChildItem(totalExpenses, participants, btn));
                     titles.get(i).setChildObjectList(childList);
                     parentObject.add(titles.get(i));
 

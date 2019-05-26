@@ -280,8 +280,6 @@ public class EventActivity extends AppCompatActivity {
 
 
 
-
-
         //Save the new document key (needed to update the userdata)
         final String expenseId = expensKey.getId();
 

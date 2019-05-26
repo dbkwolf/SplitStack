@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.EventActivity;
+import com.example.splitstack.EventListActivity;
 import com.example.splitstack.Models.EventChildItem;
 import com.example.splitstack.Models.EventParentItem;
 import com.example.splitstack.R;
@@ -84,7 +86,11 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
         EventChildItem title = (EventChildItem) o;
         eventChildViewHolder.expenses.setText(title.getExpenses());
         eventChildViewHolder.participants.setText(title.getParticipants());
-        eventChildViewHolder.btnDelete.setText("DELETE THIS");
+
+        //eventChildViewHolder.btnDelete.setText("DELETE THIS");
+
+        eventChildViewHolder.btnDelete = title.getBtnDelete();
+
         eventChildViewHolder.expenses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
