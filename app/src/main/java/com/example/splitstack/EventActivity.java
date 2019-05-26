@@ -48,7 +48,7 @@ public class EventActivity extends AppCompatActivity {
     FirebaseFirestore database;
     private Dialog myDialog;
     private static final String TAG = "EventActivity";
-
+    private double totalForSettleOutText = 0.1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -414,5 +414,32 @@ public class EventActivity extends AppCompatActivity {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
+    public void settleUp(View view){
+        Double totalExp = Double.valueOf(eventData.getTotalExpenses());
 
+        if (!eventId.equals("")) {
+
+
+            if (tabLayout.getSelectedTabPosition() == 0) {
+
+                //ADD EXPENSE
+
+                myDialog.setContentView(R.layout.settle_accounts);
+               TextView totalAmountText = (TextView) myDialog.findViewById(R.id.totalAmountTextView);
+                totalAmountText.setText(totalExp.toString());
+
+                Button btnAddExpense = myDialog.findViewById(R.id.btn_add_expense);
+
+
+                btnAddExpense.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //math goes here and dialog or toast.
+                    }
+                });
+
+                myDialog.show();
+            }
+        }
+    }
 }
