@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,8 @@ import com.example.splitstack.DBUtility.UserData;
 import com.example.splitstack.Models.EventChildItem;
 import com.example.splitstack.Models.EventParentItem;
 import com.example.splitstack.Models.TitleCreator;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
 
 import java.util.ArrayList;
@@ -80,7 +83,7 @@ public class EventListActivity extends AppCompatActivity {
                 }
                 if (tab.getPosition() == 2) {
 
-                  loadTab(2);
+                    loadTab(2);
 
                 }
             }
@@ -99,8 +102,7 @@ public class EventListActivity extends AppCompatActivity {
 
     private void loadTab(int tabNum) {
 
-        if (initData(tabNum)!= null) {
-
+        if (initData(tabNum) != null) {
 
 
             EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum), uid, database);
@@ -122,7 +124,7 @@ public class EventListActivity extends AppCompatActivity {
 
         List<ParentObject> parentObject = null;
 
-        if(userEventDataList!=null) {
+        if (userEventDataList != null) {
 
             for (EventData eD : userEventDataList) {
                 if (eD.isActive()) {
@@ -175,7 +177,7 @@ public class EventListActivity extends AppCompatActivity {
 
                 for (int i = 0; i < titles.size(); i++) {
                     List<Object> childList = new ArrayList<>();
-                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, titles.get(i).getEventId(), closedEventList.get(i).getParticipants() ));
+                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, titles.get(i).getEventId(), closedEventList.get(i).getParticipants()));
                     titles.get(i).setChildObjectList(childList);
                     parentObject.add(titles.get(i));
                 }
@@ -199,7 +201,6 @@ public class EventListActivity extends AppCompatActivity {
 
         return parentObject;
     }
-
 
 
     public ArrayList<EventParentItem> makeParentList(ArrayList<EventData> eventList) {
@@ -334,7 +335,7 @@ public class EventListActivity extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 userEventDataList.add(document.toObject(EventData.class));
-                                userEventDataList.get(userEventDataList.size()-1).setId(eventId);
+                                userEventDataList.get(userEventDataList.size() - 1).setId(eventId);
 
                                 tabLayout.getTabAt(1).select();
 
@@ -350,6 +351,10 @@ public class EventListActivity extends AppCompatActivity {
                         }
                     }
                 });
+            }
+        }
+    }
+}
 
                 //-----------------------------------------------------------------------------------------------
 
@@ -383,4 +388,4 @@ public class EventListActivity extends AppCompatActivity {
 
 
 
-}
+}*/

@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.example.splitstack.DBUtility.EventData;
+import com.example.splitstack.DBUtility.UserData;
 import com.example.splitstack.EventActivity;
 import com.example.splitstack.EventListActivity;
 import com.example.splitstack.Models.EventChildItem;
@@ -17,11 +19,15 @@ import com.example.splitstack.Models.EventParentItem;
 import com.example.splitstack.R;
 import com.example.splitstack.ViewHolders.EventChildViewHolder;
 import com.example.splitstack.ViewHolders.EventParentViewHolder;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolder, EventChildViewHolder> {
@@ -30,7 +36,7 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
     private LayoutInflater inflater;
     private String uid;
     FirebaseFirestore database;
-
+    final private String TAG = "EventAdapter";
 
 
     public EventAdapter(Context context, List<ParentObject> parentItemList, String uid, FirebaseFirestore database) {
@@ -94,9 +100,7 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
         eventChildViewHolder.expenses.setText(title.getExpenses());
         eventChildViewHolder.participants.setText(title.getParticipants());
 
-        //eventChildViewHolder.btnDelete.setText("DELETE THIS");
 
-        eventChildViewHolder.btnDelete = title.getBtnDelete();
 
         eventChildViewHolder.expenses.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +139,44 @@ public class EventAdapter extends ExpandableRecyclerAdapter<EventParentViewHolde
 
 
                 for(String userId : title.getUserId()){
-                   DocumentReference docRef = database.collection("users").document(userId);
+
+                   final DocumentReference docRef = database.collection("users").document(userId);
+
+
+                   docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+
+                                DocumentSnapshot document = task.getResult();
+
+                                if (document.exists()) {
+
+                                    UserData userD = document.toObject(UserData.class);
+
+                                    ArrayList<String> userEvents = userD.getEventList();
+
+                                    for(int i=0;i< userEvents.size();i++){
+
+                                        if(userEvents.get(i).equals(title.getEventId())){
+
+                                           userEvents.remove(i);
+
+                                        }
+                                    }
+
+                                    docRef.update("eventList", userEvents);
+
+                                    Log.d(TAG, "Current event data: " + document.getData());
+
+                                } else {
+                                    Log.d(TAG, "No such document");
+                                }
+                            } else {
+                                Log.d(TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
 
                 }
             }
