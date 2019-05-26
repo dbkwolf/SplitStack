@@ -18,26 +18,22 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.example.splitstack.Adapter.ExpenseAdapter;
 import com.example.splitstack.DBUtility.EventData;
 import com.example.splitstack.DBUtility.ExpenseData;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.*;
+import com.google.firebase.firestore.EventListener;
 import org.blockstack.android.sdk.BlockstackConfig;
 import org.blockstack.android.sdk.BlockstackSession;
 
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
+import java.util.*;
 
 
 public class EventActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
-
+    private ArrayList participantsList;
     private TextView tvEventName;
     private RecyclerView.LayoutManager mLayoutManage;
     private TabLayout tabLayout;
@@ -427,6 +423,12 @@ public class EventActivity extends AppCompatActivity {
                 myDialog.setContentView(R.layout.settle_accounts);
                TextView totalAmountText = (TextView) myDialog.findViewById(R.id.totalAmountTextView);
                 totalAmountText.setText(totalExp.toString());
+                fillingParticipantArrayListForListView();
+                ListView listview = (ListView) myDialog.findViewById(R.id.participantsListView);
+
+                StableArrayAdapter adapter = new StableArrayAdapter(this,
+                        android.R.layout.simple_list_item_1, participantsList);
+                listview.setAdapter(adapter);
 
                 Button btnAddExpense = myDialog.findViewById(R.id.btn_add_expense);
 
@@ -441,5 +443,40 @@ public class EventActivity extends AppCompatActivity {
                 myDialog.show();
             }
         }
+    }
+    public ArrayList<ExpenseItem> fillingParticipantArrayListForListView(){
+
+         participantsList = new ArrayList<>();
+
+          for (String participant: eventData.getParticipants()){
+              participantsList.add(participant);
+          }
+
+        return  participantsList;
+
+  }
+    private class StableArrayAdapter extends ArrayAdapter<String> {
+
+        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+
+        public StableArrayAdapter(Context context, int textViewResourceId,
+                                  List<String> objects) {
+            super(context, textViewResourceId, objects);
+            for (int i = 0; i < objects.size(); ++i) {
+                mIdMap.put(objects.get(i), i);
+            }
+        }
+
+        @Override
+        public long getItemId(int position) {
+            String item = getItem(position);
+            return mIdMap.get(item);
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
+
     }
 }
