@@ -413,7 +413,7 @@ public class EventActivity extends AppCompatActivity {
                 myDialog.setContentView(R.layout.settle_accounts);
 
                 TextView totalAmountText = myDialog.findViewById(R.id.totalAmountTextView);
-                totalAmountText.setText(totalExp.toString());
+                totalAmountText.setText(totalExp.toString().concat(" SEK"));
 
                 fillingParticipantArrayListForListView();
 
