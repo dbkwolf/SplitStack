@@ -135,6 +135,7 @@ public class EventActivity extends AppCompatActivity {
         if (tabNum == 0) {
             ExpenseAdapter adapter = new ExpenseAdapter(onExpenseClick());
 
+
             mRecyclerView.setLayoutManager(mLayoutManage);
             mRecyclerView.setAdapter(adapter);
         }
