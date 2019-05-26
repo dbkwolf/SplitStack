@@ -25,11 +25,11 @@ import com.example.splitstack.DBUtility.EventData;
 import com.example.splitstack.DBUtility.ExpenseData;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.*;
-import com.google.firebase.firestore.EventListener;
-import org.blockstack.android.sdk.BlockstackConfig;
-import org.blockstack.android.sdk.BlockstackSession;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class EventActivity extends AppCompatActivity {
@@ -100,7 +100,7 @@ public class EventActivity extends AppCompatActivity {
     public ArrayList<ParticipantItem> onParticipantClick() {
         ArrayList<ParticipantItem> list = new ArrayList<>();
 
-        for (String participant: eventData.getParticipants()){
+        for (String participant : eventData.getParticipants()) {
             list.add(new ParticipantItem(participant, calculateTotalContributions(participant)));
 
 
@@ -138,7 +138,7 @@ public class EventActivity extends AppCompatActivity {
         if (tabNum == 1) {
 
             ParticipantAdapter adapter = new ParticipantAdapter(onParticipantClick());
-           // ExpenseAdapter adapter = new ExpenseAdapter(onParticipantClick());
+            // ExpenseAdapter adapter = new ExpenseAdapter(onParticipantClick());
 
             mRecyclerView.setLayoutManager(mLayoutManage);
             mRecyclerView.setAdapter(adapter);
@@ -347,8 +347,7 @@ public class EventActivity extends AppCompatActivity {
 
                 if (snapshot != null && snapshot.exists()) {
 
-                    eventData=snapshot.toObject(EventData.class);
-
+                    eventData = snapshot.toObject(EventData.class);
 
 
                     tvEventName.setText(eventData.getEventName());
@@ -368,14 +367,6 @@ public class EventActivity extends AppCompatActivity {
 
     }
 
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, EventListActivity.class);
-        intent.putExtra("uid", uid);
-        startActivity(intent);
-
-    }
 
     // this code is from the firebase github for notifications with minor changes to work with our code.
     private void sendNotification(String messageBody) {
@@ -420,17 +411,31 @@ public class EventActivity extends AppCompatActivity {
                 //ADD EXPENSE
 
                 myDialog.setContentView(R.layout.settle_accounts);
-                TextView totalAmountText = myDialog.findViewById(R.id.totalAmountTextView);
-                totalAmountText.setText(totalExp.toString());
-                fillingParticipantArrayListForListView();
-                ListView listview = myDialog.findViewById(R.id.participantsListView);
 
+                TextView totalAmountText = myDialog.findViewById(R.id.totalAmountTextView);
+                totalAmountText.setText(totalExp.toString().concat(" SEK"));
+
+                fillingParticipantArrayListForListView();
+
+                ListView listview = myDialog.findViewById(R.id.participantsListView);
                 StableArrayAdapter adapter = new StableArrayAdapter(this,
                         android.R.layout.simple_list_item_1, participantsList);
                 listview.setAdapter(adapter);
 
+                TextView YouOwetextView = myDialog.findViewById(R.id.youPayTextView);
+
+                if (amountDueSpliter() > 0) {
+                    YouOwetextView.setText("Pay :");
+                } else {
+                    YouOwetextView.setText("Owed");
+                }
                 TextView userPayTextView = myDialog.findViewById(R.id.usersMustPayTextview);
-                userPayTextView.setText(Double.toString(amountDueSpliter()));
+                double amountdue = Math.abs(amountDueSpliter());
+                //String formatedString =(Math.abs(amountdue));
+                String tryingToFormatAgainStringPleaseWork = String.format("%.2f",amountdue).concat(" SEK");
+                userPayTextView.setText(tryingToFormatAgainStringPleaseWork);
+
+
                 Button btnAddExpense = myDialog.findViewById(R.id.btn_add_expense);
 
 
@@ -438,11 +443,12 @@ public class EventActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //math goes here and dialog or toast.
-                        amountDueSpliter();
-                        Toast toast =Toast.makeText(getApplicationContext(),"You paid!",Toast.LENGTH_LONG);
-                       // toast.setMargin(50,50);
+                        //  amountDueSpliter();
+                        Toast toast = Toast.makeText(getApplicationContext(), "You paid!", Toast.LENGTH_LONG);
                         toast.show();
+                        Intent intent = new Intent(EventActivity.this, EventListActivity.class);
                         myDialog.dismiss();
+                        startActivity(intent);
                     }
                 });
 
@@ -497,5 +503,6 @@ public class EventActivity extends AppCompatActivity {
         }
 
     }
+
 
 }
