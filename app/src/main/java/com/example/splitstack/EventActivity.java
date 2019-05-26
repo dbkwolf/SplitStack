@@ -342,7 +342,10 @@ public class EventActivity extends AppCompatActivity {
 
                 if (snapshot != null && snapshot.exists()) {
 
-                    eventData = snapshot.toObject(EventData.class);
+                    eventData=snapshot.toObject(EventData.class);
+
+
+
                     tvEventName.setText(eventData.getEventName());
 
                     tabLayout.getTabAt(0).select();
@@ -359,6 +362,7 @@ public class EventActivity extends AppCompatActivity {
         });
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -488,4 +492,5 @@ public class EventActivity extends AppCompatActivity {
         }
 
     }
+
 }
