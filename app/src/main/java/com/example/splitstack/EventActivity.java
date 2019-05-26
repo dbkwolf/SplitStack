@@ -430,8 +430,10 @@ public class EventActivity extends AppCompatActivity {
                     YouOwetextView.setText("Owed");
                 }
                 TextView userPayTextView = myDialog.findViewById(R.id.usersMustPayTextview);
-
-                userPayTextView.setText(Double.toString(Math.abs(amountDueSpliter())));
+                double amountdue = Math.abs(amountDueSpliter());
+                //String formatedString =(Math.abs(amountdue));
+                String tryingToFormatAgainStringPleaseWork = String.format("%.2f",amountdue).concat(" SEK");
+                userPayTextView.setText(tryingToFormatAgainStringPleaseWork);
 
 
                 Button btnAddExpense = myDialog.findViewById(R.id.btn_add_expense);
