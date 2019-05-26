@@ -115,7 +115,6 @@ public class EventListActivity extends AppCompatActivity {
 
         if (initData(tabNum) != null) {
 
-
             EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum), uid, database);
             List<ParentObject> parentObject = initData(tabNum);
 
@@ -158,7 +157,7 @@ public class EventListActivity extends AppCompatActivity {
                 for (int i = 0; i < titles.size(); i++) {
 
 
-                    String formattedTotal = String.format("%.2f", Double.valueOf(userEventDataList.get(i).getTotalExpenses()));
+                    String formattedTotal = String.format("%.2f", Double.valueOf(activeEventList.get(i).getTotalExpenses()));
 
                     Log.d(TAG, "TOTAL EVENT AMOUNT: " + formattedTotal);
 
@@ -187,25 +186,24 @@ public class EventListActivity extends AppCompatActivity {
 
 
                 for (int i = 0; i < titles.size(); i++) {
+
+
+                    String formattedTotal = String.format("%.2f", Double.valueOf(closedEventList.get(i).getTotalExpenses()));
+
+                    Log.d(TAG, "TOTAL EVENT AMOUNT: " + formattedTotal);
+
+                    String totalExpenses = "Total: " + formattedTotal + " SEK";
+                    String participants = "Participants: ";
+
+                    for (String p : activeEventList.get(i).getParticipants()) {
+                        participants = participants.concat(" " + p);
+                    }
+
                     List<Object> childList = new ArrayList<>();
-                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, titles.get(i).getEventId(), closedEventList.get(i).getParticipants()));
+                    childList.add(new EventChildItem(totalExpenses, participants, titles.get(i).getEventId(), closedEventList.get(i).getParticipants()));
                     titles.get(i).setChildObjectList(childList);
                     parentObject.add(titles.get(i));
                 }
-            } else if (tabnumber == 2) {
-
-//                ArrayList<EventParentItem> parentList = makeParentList(closedEventList);
-//                TitleCreator titleCreator = new TitleCreator();
-//                List<EventParentItem> titles = titleCreator.makeList(parentList);
-//
-
-//                for (int i = 0; i < titles.size(); i++) {
-//                    List<Object> childList = new ArrayList<>();
-//                    childList.add(new EventChildItem("expenses: 50 SEK", "participant: " + 120, titles.get(i).getEventId()));
-//                    titles.get(i).setChildObjectList(childList);
-//                    parentObject.add(titles.get(i));
-//                }
-//            }
             }
 
         }

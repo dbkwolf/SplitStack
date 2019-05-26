@@ -98,9 +98,9 @@ public class EventActivity extends AppCompatActivity {
 
         for (ExpenseData ed : eventExpenses) {
 
+            String formattedAmount = String.format("%.2f", Double.valueOf(ed.getAmount())).concat(" SEK");
 
-
-            list.add(new ExpenseItem(ed.getTitle(), ed.getAmount(), ed.getUserId()));
+            list.add(new ExpenseItem(ed.getTitle(), formattedAmount, ed.getUserId()));
 
         }
 
@@ -123,7 +123,7 @@ public class EventActivity extends AppCompatActivity {
 
     public String calculateTotalContributions(String participant) {
 
-        Double amount = 0.0;
+        Double amount = 0.00;
 
 
         for (ExpenseData ed : eventExpenses) {
@@ -132,7 +132,8 @@ public class EventActivity extends AppCompatActivity {
             }
         }
 
-        return amount.toString();
+
+        return String.format("%.2f", Double.valueOf(amount));
 
     }
 
