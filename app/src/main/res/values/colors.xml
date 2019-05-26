@@ -8,8 +8,11 @@
     <color name="colorSecondaryLight">#e2f1f8</color>
     <color name="colorTextOnPrimary">#e0f2f1</color>
     <color name="colorTextOnSecondary">#000000</color>
-    <color name="colorBackground">#C7C0BE</color>
+    <color name="colorBackground">#cfd8dc</color>
     <color name="colorError">#B71C1C</color>
+
+    <color name="green_light">#cfff95</color>
+    <color name="green">#00838f</color>
 
 
 
@@ -20,5 +23,5 @@
     <color name="blue">#1565c0</color>
     <color name="mainActivity">#43a047</color>
     <color name="grey">#fafafa</color>
-    <color name="Purple">#4a148c</color>
+    <color name="Purple">#311b92</color>
 </resources>

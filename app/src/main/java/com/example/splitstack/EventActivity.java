@@ -371,11 +371,12 @@ public class EventActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent =new Intent(this, EventListActivity.class);
-        intent.putExtra("uid", uid);
-        startActivity(intent);
+//    @Override
+//    public void onBackPressed() {
+//        Intent intent =new Intent(this, EventListActivity.class);
+//        intent.putExtra("uid", uid);
+//        startActivity(intent);
+//
+//    }
 
-    }
 }

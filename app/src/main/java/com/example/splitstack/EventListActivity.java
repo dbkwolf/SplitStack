@@ -61,6 +61,8 @@ public class EventListActivity extends AppCompatActivity {
 
         initTabListeners();
 
+
+
     }
 
     private void initTabListeners() {
@@ -101,11 +103,15 @@ public class EventListActivity extends AppCompatActivity {
 
         if (initData(tabNum)!= null) {
 
+
+
             EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum), uid);
+            List<ParentObject> parentObject = initData(tabNum);
+
             adapter.setParentClickableViewAnimationDefaultDuration();
             adapter.setParentAndIconExpandOnClick(true);
-
             recyclerView.setAdapter(adapter);
+
         }
 
     }
@@ -119,6 +125,7 @@ public class EventListActivity extends AppCompatActivity {
         List<ParentObject> parentObject = null;
 
         if(userEventDataList!=null) {
+
 
             for (EventData eD : userEventDataList) {
                 if (eD.isActive()) {
@@ -309,16 +316,16 @@ public class EventListActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void createUserEventList() {
 
+
         userEventDataList.clear();
 
         if (currentUserData.getEventList() != null) {
-            for (final String eventId : currentUserData.getEventList()) {
 
+            for (final String eventId : currentUserData.getEventList()) {
                 final DocumentReference eventRef = database.collection("events").document(eventId);
                 eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
@@ -347,7 +354,4 @@ public class EventListActivity extends AppCompatActivity {
             }
         }
     }
-
-
-
 }
