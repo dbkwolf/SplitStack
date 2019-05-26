@@ -146,6 +146,7 @@ public class EventListActivity extends AppCompatActivity {
                 List<EventParentItem> titles = titleCreator.makeList(parentList);
 
 
+
                 for (int i = 0; i < titles.size(); i++) {
 
 
