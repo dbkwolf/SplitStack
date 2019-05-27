@@ -22,7 +22,7 @@ public class ActiveEventsAdapter extends RecyclerView.Adapter<ActiveEventsAdapte
         public ActiveEventsViewHolder(View itemView) {
             super(itemView);
             tvEventName = itemView.findViewById(R.id.eventName_textView);
-            tvParticipant = itemView.findViewById(R.id.contributor_textView);
+            tvParticipant = itemView.findViewById(R.id.tv_active_event_amount_dash);
         }
     }
 
@@ -49,7 +49,7 @@ public class ActiveEventsAdapter extends RecyclerView.Adapter<ActiveEventsAdapte
 
 
         activeEventsViewHolder.tvEventName.setText(currentItem.getEventName());
-        activeEventsViewHolder.tvParticipant.setText(currentItem.getTotalExpenses());
+        activeEventsViewHolder.tvParticipant.setText(String.format("%.2f", Double.valueOf(currentItem.getTotalExpenses())).concat(" SEK"));
     }
 
     @Override

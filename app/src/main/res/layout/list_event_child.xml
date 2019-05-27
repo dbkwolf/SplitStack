@@ -31,12 +31,14 @@
         <Button
             android:id="@+id/delete"
 
+            android:textColor="@color/colorTextOnPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="23dp"
             android:padding="8dp"
+            android:background="#F80404"
             android:text="Delete" />
     </RelativeLayout>
 

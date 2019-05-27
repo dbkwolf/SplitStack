@@ -25,6 +25,7 @@ import android.view.View;
 
 import android.widget.EditText;
 
+import android.widget.TextView;
 import android.widget.Toast;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.splitstack.Adapter.EventAdapter;
@@ -43,11 +44,14 @@ import com.google.firebase.firestore.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class EventListActivity extends AppCompatActivity {
 
     private static final String TAG = "EventListActivity";
     RecyclerView recyclerView;
+    TextView tvAmountDue;
     private TabLayout tabLayout;
     String uid = "";
     UserData currentUserData;
@@ -75,6 +79,7 @@ public class EventListActivity extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.tabLayout);
         uid = getIntent().getStringExtra("uid");
+        tvAmountDue=findViewById(R.id.tv_total_amount_due);
 
         database = FirebaseFirestore.getInstance();
 
@@ -85,6 +90,8 @@ public class EventListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         initTabListeners();
+
+        tvAmountDue.setText("1205.90 SEK");
 
     }
 
@@ -151,7 +158,7 @@ public class EventListActivity extends AppCompatActivity {
         if (initData(tabNum) != null) {
 
             EventAdapter adapter = new EventAdapter(EventListActivity.this, initData(tabNum), uid, database);
-            List<ParentObject> parentObject = initData(tabNum);
+            //List<ParentObject> parentObject = initData(tabNum);
 
             adapter.setParentClickableViewAnimationDefaultDuration();
             adapter.setParentAndIconExpandOnClick(true);
@@ -163,7 +170,7 @@ public class EventListActivity extends AppCompatActivity {
 
     private List<ParentObject> initData(int tabnumber) {
         //TitleCreator titleCreator = TitleCreator.get(this);
-
+        Log.d(TAG, "Current tab: " + tabLayout.getSelectedTabPosition());
         ArrayList<EventData> activeEventList = new ArrayList<>();
         ArrayList<EventData> closedEventList = new ArrayList<>();
 
@@ -172,22 +179,26 @@ public class EventListActivity extends AppCompatActivity {
         if (userEventDataList != null) {
 
             for (EventData eD : userEventDataList) {
+
+
                 if (eD.isActive()) {
                     activeEventList.add(eD);
                 } else {
                     closedEventList.add(eD);
                 }
             }
-
+            Log.d(TAG, "closed events list: " + closedEventList.size());
             parentObject = new ArrayList<>();
 
             if (tabnumber == 1) {
+
+                Log.d(TAG, "Performing operations for tab number: " + tabnumber);
 
                 ArrayList<EventParentItem> parentList = makeParentList(activeEventList);
                 TitleCreator titleCreator = new TitleCreator();
                 List<EventParentItem> titles = titleCreator.makeList(parentList);
 
-
+                Log.d(TAG, "titles size " + titles.size());
 
                 for (int i = 0; i < titles.size(); i++) {
 
@@ -214,12 +225,12 @@ public class EventListActivity extends AppCompatActivity {
 
 
             } else if (tabnumber == 0) {
-
+                Log.d(TAG, "Performing operations for tab number: " + tabnumber);
                 ArrayList<EventParentItem> parentList = makeParentList(closedEventList);
                 TitleCreator titleCreator = new TitleCreator();
                 List<EventParentItem> titles = titleCreator.makeList(parentList);
 
-
+                Log.d(TAG, "titles size " + titles.size());
                 for (int i = 0; i < titles.size(); i++) {
 
 
@@ -230,7 +241,7 @@ public class EventListActivity extends AppCompatActivity {
                     String totalExpenses = "Total: " + formattedTotal + " SEK";
                     String participants = "Participants: ";
 
-                    for (String p : activeEventList.get(i).getParticipants()) {
+                    for (String p : closedEventList.get(i).getParticipants()) {
                         participants = participants.concat(" " + p);
                     }
 
@@ -369,7 +380,12 @@ public class EventListActivity extends AppCompatActivity {
         userEventDataList.clear();
 
         if (currentUserData.getEventList() != null) {
+
+
+
             for (final String eventId : currentUserData.getEventList()) {
+
+
 
                 final DocumentReference eventRef = database.collection("events").document(eventId);
 
@@ -380,8 +396,14 @@ public class EventListActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
+
+                                //Boolean d = document.getBoolean("active");
+                               ;
+                               EventData evD = document.toObject(EventData.class);
                                 userEventDataList.add(document.toObject(EventData.class));
                                 userEventDataList.get(userEventDataList.size() - 1).setId(eventId);
+                                Log.d(TAG, "THE CURRENT DOCUMENT IS : " + userEventDataList.get(userEventDataList.size() - 1).isActive().toString());
+
 
 
                                 tabLayout.getTabAt(1).select();
@@ -399,6 +421,9 @@ public class EventListActivity extends AppCompatActivity {
                     }
                 });
             }
+
+
+
         }
     }
 

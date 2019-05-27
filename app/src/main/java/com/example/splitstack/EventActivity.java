@@ -48,6 +48,8 @@ public class EventActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ArrayList participantsList;
     private TextView tvEventName;
+    private TextView tvEventTotal;
+    private TextView tvFairshare;
     private RecyclerView.LayoutManager mLayoutManage;
     private TabLayout tabLayout;
     private String uid;
@@ -57,7 +59,7 @@ public class EventActivity extends AppCompatActivity {
     private Dialog myDialog;
     SwipeController swipeController = null;
     ItemTouchHelper itemTouchhelper;
-    ExpenseAdapter adapter;
+
     private double totalForSettleOutText = 0.1;
 
     @Override
@@ -84,6 +86,8 @@ public class EventActivity extends AppCompatActivity {
         eventId = getIntent().getStringExtra("eventId");
 
         tvEventName = findViewById(R.id.event_title);
+        tvEventTotal = findViewById(R.id.tv_event_total);
+        tvFairshare = findViewById(R.id.event_fairshare);
 
         DbExpensesListener();
 
@@ -99,9 +103,6 @@ public class EventActivity extends AppCompatActivity {
 
 
         myDialog = new Dialog(this);
-
-
-
 
 
     }
@@ -130,32 +131,35 @@ public class EventActivity extends AppCompatActivity {
     }
 
 
-
-    public void deleteExpense( String expenseId,final String amount) {
-
+    public void deleteExpense(String expenseId, final String amount) {
 
 
-   database.collection("expenses").document(expenseId)
-            .delete()
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
+        if (tabLayout.getSelectedTabPosition() == 0) {
 
-                    DocumentReference eventRef = database.collection("events").document(eventId);
+            database.collection("expenses").document(expenseId)
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
 
-                    Double updatedExpenses = Double.valueOf(eventData.getTotalExpenses()) - Double.valueOf(amount.replace("SEK", ""));
+                            DocumentReference eventRef = database.collection("events").document(eventId);
 
-                    eventRef.update("totalExpenses", updatedExpenses.toString());
+                            Double updatedExpenses = Double.valueOf(eventData.getTotalExpenses()) - Double.valueOf(amount.replace("SEK", ""));
 
-                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.w(TAG, "Error deleting document", e);
-                }
-            });
+                            eventRef.update("totalExpenses", updatedExpenses.toString());
+
+                            Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error deleting document", e);
+                        }
+                    });
+        } else {
+            Toast.makeText(this, "Delete participant not yet implemented", Toast.LENGTH_LONG).show();
+        }
 
 
     }
@@ -200,13 +204,12 @@ public class EventActivity extends AppCompatActivity {
         }
 
 
-        return String.format("%.2f", Double.valueOf(amount));
+        return String.format("%.2f", Double.valueOf(amount)).concat(" SEK");
 
     }
 
 
     private void loadTab(int tabNum) {
-
 
 
         if (tabNum == 0) {
@@ -404,13 +407,15 @@ public class EventActivity extends AppCompatActivity {
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.get("eventId") != null) {
 
+
                                 eventExpenses.add(doc.toObject(ExpenseData.class));
 
                             }
                         }
 
                         tabLayout.getTabAt(0).select();
-                        sendNotification("Hey, someone made some cahanges to your event: " + eventData.getEventName());
+
+                        sendNotification("Hey, someone made some changes to your event: " + eventData.getEventName());
 
 
                         Log.d(TAG, "Current Expenses list : " + eventExpenses.toString());
@@ -423,7 +428,6 @@ public class EventActivity extends AppCompatActivity {
     public void addParticipant(String participant) {
 
         if (!participant.equals("")) {
-
             DocumentReference eventRef = database.collection("events").document(eventId);
 
             eventRef.update("participants", FieldValue.arrayUnion(participant));
@@ -457,9 +461,21 @@ public class EventActivity extends AppCompatActivity {
 
                     tvEventName.setText(eventData.getEventName());
 
-                    tabLayout.getTabAt(0).select();
+                    Double totalExpenses = Double.valueOf(eventData.getTotalExpenses());
 
-                    loadTab(0);
+                    tvEventTotal.setText("Total : ".concat(String.format("%.2f", totalExpenses)).concat(" SEK"));
+
+                    Double fairshare = totalExpenses/eventData.getParticipants().size();
+
+                    tvFairshare.setText("Current Fairshare: ".concat(String.format("%.2f", fairshare)).concat(" SEK"));
+
+                    //tabLayout.getTabAt(0).select();
+
+
+
+                    int tabNum = tabLayout.getSelectedTabPosition();
+
+                    loadTab(tabNum);
 
                     sendNotification("An new participant was added to one of your trips");
 
@@ -505,8 +521,10 @@ public class EventActivity extends AppCompatActivity {
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 
-    public void settleUp(View view) {
-        Double totalExp = Double.valueOf(eventData.getTotalExpenses());
+    public void settleUp(View viwe){
+
+
+     Double totalExp = Double.valueOf(eventData.getTotalExpenses());
 
         if (!eventId.equals("")) {
 
@@ -537,7 +555,7 @@ public class EventActivity extends AppCompatActivity {
                 TextView userPayTextView = myDialog.findViewById(R.id.usersMustPayTextview);
                 double amountdue = Math.abs(amountDueSpliter());
                 //String formatedString =(Math.abs(amountdue));
-                String tryingToFormatAgainStringPleaseWork = String.format("%.2f",amountdue).concat(" SEK");
+                String tryingToFormatAgainStringPleaseWork = String.format("%.2f", amountdue).concat(" SEK");
                 userPayTextView.setText(tryingToFormatAgainStringPleaseWork);
 
 
@@ -554,8 +572,17 @@ public class EventActivity extends AppCompatActivity {
                         Toast toast = Toast.makeText(getApplicationContext(), "You paid!", Toast.LENGTH_LONG);
 
                         toast.show();
-                        Intent intent = new Intent(EventActivity.this, EventListActivity.class);
+
+                        DocumentReference eventRef = database.collection("events").document(eventId);
+
+                        eventRef.update("active", false);
+
+                        database.collection("users").document(uid).update("totalCredit", "0");
+
+
                         myDialog.dismiss();
+                        Intent intent = new Intent(EventActivity.this, EventListActivity.class);
+                        intent.putExtra("uid", uid);
                         startActivity(intent);
                     }
                 });
@@ -580,7 +607,7 @@ public class EventActivity extends AppCompatActivity {
     public double amountDueSpliter() {
         Double indivudalPromisedAmount = Double.valueOf(eventData.getTotalExpenses()) / participantsList.size();
         double amountDue = 0;
-        double userContribution = Double.parseDouble(calculateTotalContributions(uid));
+        double userContribution = Double.parseDouble(calculateTotalContributions(uid).replace("SEK",""));
         amountDue = indivudalPromisedAmount - userContribution;
         System.out.println("The amount due for the user is !! " + amountDue + " sek.");
         return amountDue;

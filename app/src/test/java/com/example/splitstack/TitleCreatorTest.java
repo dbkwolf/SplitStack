@@ -24,10 +24,10 @@ public class TitleCreatorTest {
     @Test
     public void makeList() {
         System.out.println("MakeList");
-        parentArrayList.add(new EventParentItem("spain"));
+        parentArrayList.add(new EventParentItem("spain", "id"));
         titleCreator = new TitleCreator();
         List<EventParentItem> test = titleCreator.makeList(parentArrayList);
-        List<EventParentItem> parentExpectedList = Arrays.asList(new EventParentItem("spain"));
+        List<EventParentItem> parentExpectedList = Arrays.asList(new EventParentItem("spain", "id"));
         expectedResult = parentExpectedList.get(0).getTitle();
         result = test.get(0).getTitle();
 

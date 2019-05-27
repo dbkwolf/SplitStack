@@ -9,7 +9,7 @@
         android:id="@+id/action_favorite"
         android:orderInCategory="300"
         android:title="User"
-        android:icon="@drawable/ic_toolbar_settle"
+        android:icon="@drawable/ic_toolbar_settings"
         app:showAsAction="ifRoom"/>
 
 </menu>

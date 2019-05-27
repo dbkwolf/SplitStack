@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
@@ -21,17 +22,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Pie;
 import com.example.splitstack.Adapter.ActiveEventsAdapter;
 import com.example.splitstack.DBUtility.EventData;
 import com.example.splitstack.DBUtility.UserData;
-import com.example.splitstack.SQLite.SQLiteHelper;
-import com.example.splitstack.SQLite.UserHistoryContract;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,11 +49,10 @@ public class DashboardActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManage;
     private String decentralizedUserId = "";
 
+
     private String id = "";
     private UserData currentUserData = null;
     private Dialog myDialog;
-
-
 
     FirebaseFirestore database = null;
 
@@ -58,9 +63,10 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         setUserID();
 
+
+
         database = FirebaseFirestore.getInstance();
 
-        findUser();
 
         myDialog = new Dialog(this);
 
@@ -73,12 +79,21 @@ public class DashboardActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManage);
         mRecyclerView.setAdapter(mAdapter);
 
+        findUser();
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle(" Dashboard");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_toolbar_icon);
 
+
+        barChartOps();
+
+
+
+        //anyChartView.bringToFront();
+        //((View)anyChartView.getParent()).requestLayout();
 
     }
 
@@ -206,8 +221,12 @@ public class DashboardActivity extends AppCompatActivity {
             TextView tv_amount = findViewById(R.id.activeEventsAmount_textView);
 
 
+
+
+
             if (eventIdList != null) {
                 tv_amount.setText(String.valueOf(eventIdList.size()));
+
                 for (String eventId : eventIdList) {
 
                     DocumentReference docIdRef = database.collection("events").document(eventId);
@@ -219,7 +238,6 @@ public class DashboardActivity extends AppCompatActivity {
                             EventData eventData = documentSnapshot.toObject(EventData.class);
                             eventDataList.add(eventData);
 
-
                             mAdapter = new ActiveEventsAdapter(eventDataList);
 
                             mRecyclerView.setAdapter(mAdapter);
@@ -227,6 +245,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                         }
                     });
+
 
 
                 }
@@ -237,6 +256,23 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
     }
+
+    public void barChartOps(){
+        Pie pie = AnyChart.pie();
+
+        List<DataEntry> data = new ArrayList<>();
+        data.add(new ValueDataEntry("Golf Day", 25000));
+        data.add(new ValueDataEntry("Festival 19",5000));
+        data.add(new ValueDataEntry("Spain Holiday", 12000));
+        data.add(new ValueDataEntry("Saturday Night", 1800));
+
+        pie.data(data);
+
+        AnyChartView anyChartView = findViewById(R.id.any_chart_view);
+        anyChartView.setChart(pie);
+    }
+
+
 
 
     @Override
