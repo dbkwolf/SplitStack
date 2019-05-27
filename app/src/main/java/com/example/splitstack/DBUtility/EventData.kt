@@ -4,7 +4,7 @@ data class EventData (
 
 
     val eventName : String? = "",
-    val isActive : Boolean? = true,
+    var isActive : Boolean? = true,
     val participants: ArrayList<String>? = null,
     val totalExpenses:String? = ""
 

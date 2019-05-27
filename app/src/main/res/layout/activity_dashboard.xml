@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:elevation="8dp"
-        android:text="2 500.25 kr"
+        android:text="2 500.25 SEK"
         android:textColor="@color/colorTextOnSecondary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/dueIn_View"
@@ -101,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="8dp"
-        android:text="120.00 kr"
+        android:text="120.00 SEK"
         android:textColor="#d32f2f"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/dueOut_View"
@@ -124,6 +124,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dueIn_View" />
 
+
+
     <View
         android:id="@+id/view"
         android:layout_width="374dp"
@@ -140,6 +142,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dontKnow_View"
         app:layout_constraintVertical_bias="0.0" />
+
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/activeEvents_recyclerView"
@@ -164,7 +168,7 @@
         android:clickable="true"
         android:elevation="8dp"
         android:onClick="goToEventList"
-        android:text="Active Events: "
+        android:text="All Events: "
         android:textColor="#ffff"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="@+id/view"
@@ -203,5 +207,18 @@
         app:layout_constraintStart_toEndOf="@+id/activeEvents_textView"
         app:layout_constraintTop_toTopOf="@+id/view" />
 
+    <com.anychart.AnyChartView
+        android:id="@+id/any_chart_view"
+        android:layout_width="350dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorBackground"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/dontKnow_View"
+        app:layout_constraintStart_toStartOf="@+id/dontKnow_View"
+        app:layout_constraintTop_toTopOf="@+id/dontKnow_View"
+        app:layout_constraintVertical_bias="0.666" />
 
 </android.support.constraint.ConstraintLayout>

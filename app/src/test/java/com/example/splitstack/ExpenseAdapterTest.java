@@ -18,7 +18,7 @@ public class ExpenseAdapterTest {
     public void getItemCount() {
         System.out.println("getItemCount");
         for (int i = 0; i <4 ; i++) {
-            exampleList.add(new ExpenseItem(3, "heya", "hoho"));
+            exampleList.add(new ExpenseItem("title", "heya", "hoho", "huhu", "haha"));
         }
         expectedResult = 4;
         result = expAdapter.getItemCount();
